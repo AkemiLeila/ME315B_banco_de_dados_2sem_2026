@@ -3,3 +3,23 @@ title: "lab01"
 output: html_document
 ---
 
+Laboratório 01
+Importação e Manipulação de Dados em R
+Benilton Carvalho, Guilherme Ludwig, Tatiana Benaglia
+Introdução
+Um conjunto de dados no formato tidy beneficia o analista de dados por permitir a manipulação dos mesmos de uma maneira unificada. De modo similar, métodos estatísticos são habitualmente implementados para receber dados neste formato. Desta maneira, a importação e tratamento de dados visando o referido formato reduzirá a criação de bancos de dados temporários, evitando problemas difíceis de diagnosticar.
+
+Os conjuntos de dados apresentados correspondem ao número de casos de tuberculose observados em alguns países, juntamente com seus tamanhos populacionais.
+
+Objetivos
+Ao fim deste laboratório, você deverá ser capaz de:
+
+Caracterizar um conjunto de dados no formato tidy;
+Manipular bases de dados, para responder perguntas específicas, utilizando o arcabouço implementado via tidyverse, com uso de verbos do pacote dplyr e apresentação gráfica de resultados utilizando o pacote ggplot2;
+Notar que responder tais perguntas com bases de dados que não estejam no formato tidy requer trabalho adicional;
+Manipulação de Dados no Formato Tidy
+
+```{r}
+library(tidyverse)
+```
+
