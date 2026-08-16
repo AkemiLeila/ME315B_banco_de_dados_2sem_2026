@@ -33,31 +33,30 @@ library(tidyverse)
 ```{r}
 table1
 ```
-Resposta: Sim, o banco table1 está em formato tidy, pois as colunas representam variaveis e as linhas contém apenas uma observação para cada variável
+Resposta: Sim, o banco table1 está em formato tidy, pois cada coluna representa uma variavel e cada linha representa uma obseervação
 
 ```{r}
 table2
 
 ```
 
-Resposta: Sim, o banco table2 está em formato tidy, pois as colunas representam variaveis e as linhas contém apenas uma observação para cada variável
-
+Resposta: Não, o banco table2 não está em formato tidy, pois a coluna type representa duas categorias diferentes e deveriam ser organizadas em colunas diferentes.
 ```{r}
 table3
 ```
 
-Resposta: Não, o banco table3 não está em formato tidy, pois a coluna rate esta classificada como <chr> e possue duas inforamções em uma única variavel, embora numericamente ela possa comunicar uma taxa, as informações contidas na coluna são referentes ao "cases" e a "population".
+Resposta: Não, o banco table3 não está em formato tidy, pois a coluna rate  possue duas inforamções em uma única variavel.
 
 ```{r}
 table4a
 ```
 
-Resposta: Não, aqui temos duas colunas cominucando data, o formato longo (ou tidy) seria formado por uma tabela contendo país, ano e número de casos
+Resposta: Não, aqui temos duas colunas com nome referenciando os anos de 1999 e 2000, no formato longo (ou tidy) seria apropriado que essas informações fossem organizadas na variavel "ano".
 
 ```{r}
 table4b
 ```
-Resposta: Não, aqui temos duas colunas cominucando data, o formato longo (ou tidy) seria formado por uma tabela contendo país, ano e número de casos
+Resposta: Não, aqui temos duas colunas com nome referenciando os anos de 1999 e 2000, no formato longo (ou tidy) seria apropriado que essas informações fossem organizadas na variavel "ano".
 
 
 
@@ -125,10 +124,14 @@ Armazenar o resultado numa variável apropriada;
 #para table2
 
 casos_table2 <- table2 %>% 
-                  filter(type == "cases")
+                  filter(type == "cases")%>% 
+                    select(country, year, count)
 
 populacao_table2 <- table2 %>% 
-                      filter(type == "population")
+                      filter(type == "population")%>% 
+                        select(country, year,  count)
+
+
 taxa_tabela2 <- casos_table2 %>% 
                   mutate(taxa = count/populacao_table2$count * 10000)
 taxa_tabela2
