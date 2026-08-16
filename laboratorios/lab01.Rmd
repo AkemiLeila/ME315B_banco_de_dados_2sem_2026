@@ -5,30 +5,33 @@ output:
   html_document: default
 ---
 
-##Laboratório 01
-###Importação e Manipulação de Dados em R
+# Laboratório 01
+## Importação e Manipulação de Dados em R
 Benilton Carvalho, Guilherme Ludwig, Tatiana Benaglia
 
-####Introdução
+### Introdução
+
 Um conjunto de dados no formato tidy beneficia o analista de dados por permitir a manipulação dos mesmos de uma maneira unificada. De modo similar, métodos estatísticos são habitualmente implementados para receber dados neste formato. Desta maneira, a importação e tratamento de dados visando o referido formato reduzirá a criação de bancos de dados temporários, evitando problemas difíceis de diagnosticar.
 
 Os conjuntos de dados apresentados correspondem ao número de casos de tuberculose observados em alguns países, juntamente com seus tamanhos populacionais.
 
-####Objetivos
+### Objetivos
+
 Ao fim deste laboratório, você deverá ser capaz de:
 
-Caracterizar um conjunto de dados no formato tidy;
-Manipular bases de dados, para responder perguntas específicas, utilizando o arcabouço implementado via tidyverse, com uso de verbos do pacote dplyr e apresentação gráfica de resultados utilizando o pacote ggplot2;
-Notar que responder tais perguntas com bases de dados que não estejam no formato tidy requer trabalho adicional;
+- Caracterizar um conjunto de dados no formato tidy;
+- Manipular bases de dados, para responder perguntas específicas, utilizando o arcabouço implementado via tidyverse, com uso de verbos do pacote dplyr e apresentação gráfica de resultados utilizando o pacote ggplot2;
+- Notar que responder tais perguntas com bases de dados que não estejam no formato tidy requer trabalho adicional;
+
+### Manipulação de Dados no Formato Tidy
 
 
-####Manipulação de Dados no Formato Tidy
-1.Carregue o pacote tidyverse
+1. Carregue o pacote tidyverse
 ```{r}
 library(tidyverse)
 ```
 
-2.Apresente os bancos de dados table1, table2, table3, table4a e table4b, distribuídos juntamente com o pacote tidyverse. Para cada banco de dados, descreva textualmente se ele está no formato tidy e justifique cada uma de suas respostas.
+2. Apresente os bancos de dados table1, table2, table3, table4a e table4b, distribuídos juntamente com o pacote tidyverse. Para cada banco de dados, descreva textualmente se ele está no formato tidy e justifique cada uma de suas respostas.
 
 ```{r}
 table1
@@ -60,7 +63,7 @@ Resposta: Não, aqui temos duas colunas com nome referenciando os anos de 1999 e
 
 
 
-3.Utilizando comandos do pacote dplyr, determine a taxa de ocorrência de tuberculose para cada 10.000 pessoas. Armazene o resultado em um objeto chamado taxas.
+3. Utilizando comandos do pacote dplyr, determine a taxa de ocorrência de tuberculose para cada 10.000 pessoas. Armazene o resultado em um objeto chamado taxas.
 
 ```{r}
 library(dplyr)
@@ -73,7 +76,7 @@ taxas
 
 ```
 
-4.Apresente, utilizando comandos do pacote dplyr, o número de casos de tuberculose por ano.
+4. Apresente, utilizando comandos do pacote dplyr, o número de casos de tuberculose por ano.
 ```{r}
 casos_ano <- dados %>% 
               group_by(year) %>% 
@@ -81,7 +84,7 @@ casos_ano <- dados %>%
 casos_ano
 ```
 
-5.Apresente, utilizando comandos do pacote dplyr, o número de casos de tuberculose identificados em cada país.
+5. Apresente, utilizando comandos do pacote dplyr, o número de casos de tuberculose identificados em cada país.
 ```{r}
 
 casos_pais <- dados %>% 
@@ -90,7 +93,7 @@ casos_pais <- dados %>%
 casos_pais
 ```
 
-6.Utilizando comandos do pacote dplyr, apresente uma tabela que descreva a mudança no número de casos, em cada país, ao longo dos anos de 1999 e 2000.
+6. Utilizando comandos do pacote dplyr, apresente uma tabela que descreva a mudança no número de casos, em cada país, ao longo dos anos de 1999 e 2000.
 ```{r}
 mudanca_numero_casos <- dados %>% 
                           arrange(country, year) %>% 
@@ -102,7 +105,7 @@ mudanca_numero_casos <- dados %>%
 mudanca_numero_casos
 ```
 
-7.Apresente um gráfico de linhas, preparado via ggplot2, apresentando a mudança na taxa de casos (por 10.000 habitantes) estratificado por país.
+7. Apresente um gráfico de linhas, preparado via ggplot2, apresentando a mudança na taxa de casos (por 10.000 habitantes) estratificado por país.
 
 ```{r}
 library(ggplot2)
@@ -168,7 +171,7 @@ taxa_tabela4
 
 
 
-9.Refaça o gráfico da questão 7 para os dados apresentados em table2.
+9. Refaça o gráfico da questão 7 para os dados apresentados em table2.
 
 ```{r}
 grafico2 <- ggplot(taxa_tabela2, aes(x = year, y = taxa, group = country, colour = country)) +
@@ -191,7 +194,7 @@ tidy4a <- table4a %>%
                   )
 ```
 
-11.Refaça o item 10 para o objeto table4b. Armazene o resultado num objeto chamado tidy4b.
+11. Refaça o item 10 para o objeto table4b. Armazene o resultado num objeto chamado tidy4b.
 
 ```{r}
 tidy4b <- table4b %>% 
@@ -202,7 +205,7 @@ tidy4b <- table4b %>%
                   )
 ```
 
-12.Combine os objetos tidy4a e tidy4b em um único objeto, utilizando o comando left_join. Apresente uma explicação textual sobre o que faz o referido comando.
+12. Combine os objetos tidy4a e tidy4b em um único objeto, utilizando o comando left_join. Apresente uma explicação textual sobre o que faz o referido comando.
 
 ```{r}
 
@@ -220,7 +223,7 @@ Resposta: o comando left_join compara as linhas da tabela à esquerda com as da 
 
 
 
-13.Use o comando pivot_wider para tranformar o objeto table2 em um objeto com formato tidy.
+13. Use o comando pivot_wider para tranformar o objeto table2 em um objeto com formato tidy.
 
 ```{r}
 tabela2 <- table2 %>% 
@@ -235,7 +238,7 @@ tabela2
 ```
 
 
-14.Observe que a coluna rate do objeto table3 é um texto mostrando a fração que formaria a taxa de casos de tuberculose. Transforme o objeto table3 em um objeto com formato tidy separando a coluna 3 em duas outras colunas: cases e population, utilizando o comando separate. Utilize o argumento convert para transformar o resultado em um objeto numérico.
+14. Observe que a coluna rate do objeto table3 é um texto mostrando a fração que formaria a taxa de casos de tuberculose. Transforme o objeto table3 em um objeto com formato tidy separando a coluna 3 em duas outras colunas: cases e population, utilizando o comando separate. Utilize o argumento convert para transformar o resultado em um objeto numérico.
 
 ```{r}
 tabela3 <- table3 %>% 
