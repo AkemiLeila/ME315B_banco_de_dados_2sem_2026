@@ -1,25 +1,247 @@
 ---
 title: "lab01"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
-Laboratório 01
-Importação e Manipulação de Dados em R
+##Laboratório 01
+###Importação e Manipulação de Dados em R
 Benilton Carvalho, Guilherme Ludwig, Tatiana Benaglia
-Introdução
+
+####Introdução
 Um conjunto de dados no formato tidy beneficia o analista de dados por permitir a manipulação dos mesmos de uma maneira unificada. De modo similar, métodos estatísticos são habitualmente implementados para receber dados neste formato. Desta maneira, a importação e tratamento de dados visando o referido formato reduzirá a criação de bancos de dados temporários, evitando problemas difíceis de diagnosticar.
 
 Os conjuntos de dados apresentados correspondem ao número de casos de tuberculose observados em alguns países, juntamente com seus tamanhos populacionais.
 
-Objetivos
+####Objetivos
 Ao fim deste laboratório, você deverá ser capaz de:
 
 Caracterizar um conjunto de dados no formato tidy;
 Manipular bases de dados, para responder perguntas específicas, utilizando o arcabouço implementado via tidyverse, com uso de verbos do pacote dplyr e apresentação gráfica de resultados utilizando o pacote ggplot2;
 Notar que responder tais perguntas com bases de dados que não estejam no formato tidy requer trabalho adicional;
-Manipulação de Dados no Formato Tidy
 
+
+####Manipulação de Dados no Formato Tidy
+1.Carregue o pacote tidyverse
 ```{r}
 library(tidyverse)
+```
+
+2.Apresente os bancos de dados table1, table2, table3, table4a e table4b, distribuídos juntamente com o pacote tidyverse. Para cada banco de dados, descreva textualmente se ele está no formato tidy e justifique cada uma de suas respostas.
+
+```{r}
+table1
+```
+Resposta: Sim, o banco table1 está em formato tidy, pois as colunas representam variaveis e as linhas contém apenas uma observação para cada variável
+
+```{r}
+table2
+
+```
+
+Resposta: Sim, o banco table2 está em formato tidy, pois as colunas representam variaveis e as linhas contém apenas uma observação para cada variável
+
+```{r}
+table3
+```
+
+Resposta: Não, o banco table3 não está em formato tidy, pois a coluna rate esta classificada como <chr> e possue duas inforamções em uma única variavel, embora numericamente ela possa comunicar uma taxa, as informações contidas na coluna são referentes ao "cases" e a "population".
+
+```{r}
+table4a
+```
+
+Resposta: Não, aqui temos duas colunas cominucando data, o formato longo (ou tidy) seria formado por uma tabela contendo país, ano e número de casos
+
+```{r}
+table4b
+```
+Resposta: Não, aqui temos duas colunas cominucando data, o formato longo (ou tidy) seria formado por uma tabela contendo país, ano e número de casos
+
+
+
+3.Utilizando comandos do pacote dplyr, determine a taxa de ocorrência de tuberculose para cada 10.000 pessoas. Armazene o resultado em um objeto chamado taxas.
+
+```{r}
+library(dplyr)
+
+dados <- table1
+taxas <- dados %>%
+        mutate(taxa = cases/population * 10000)
+        
+taxas
+
+```
+
+4.Apresente, utilizando comandos do pacote dplyr, o número de casos de tuberculose por ano.
+```{r}
+casos_ano <- dados %>% 
+              group_by(year) %>% 
+                summarise(casos = sum(cases))
+casos_ano
+```
+
+5.Apresente, utilizando comandos do pacote dplyr, o número de casos de tuberculose identificados em cada país.
+```{r}
+
+casos_pais <- dados %>% 
+                group_by(country) %>% 
+                  summarise(total = sum(cases))
+casos_pais
+```
+
+6.Utilizando comandos do pacote dplyr, apresente uma tabela que descreva a mudança no número de casos, em cada país, ao longo dos anos de 1999 e 2000.
+```{r}
+mudanca_numero_casos <- dados %>% 
+                          arrange(country, year) %>% 
+                            group_by(country) %>% 
+                              mutate(mudanca = cases - lag(cases)) %>% 
+                                filter(year == 2000) %>% 
+                                  select(country, mudanca)
+
+mudanca_numero_casos
+```
+
+7.Apresente um gráfico de linhas, preparado via ggplot2, apresentando a mudança na taxa de casos (por 10.000 habitantes) estratificado por país.
+
+```{r}
+library(ggplot2)
+grafico <- ggplot(taxas, aes(x = year, y = taxa, group = country, colour = country)) +
+            geom_line() +
+              geom_point() +
+               labs(x = "Ano", y = "Taxa de casos por 10 000 habitantes", color = "País") +
+                  theme_minimal()
+grafico
+```
+8. Calcule a taxa para as tabelas table2 e table4a+table4b. Para isso, você precisará executar 4 passos:
+
+Extrair o número de casos de tuberculose por país, por ano;
+Extrair o tamanho da população correspondente, por ano;
+Dividir o número de casos pelo tamanho da população e multiplicar o resultado por 10.000;
+Armazenar o resultado numa variável apropriada;
+
+```{r}
+#para table2
+
+casos_table2 <- table2 %>% 
+                  filter(type == "cases")
+
+populacao_table2 <- table2 %>% 
+                      filter(type == "population")
+taxa_tabela2 <- casos_table2 %>% 
+                  mutate(taxa = count/populacao_table2$count * 10000)
+taxa_tabela2
+
+```
+
+```{r}
+#para table4a + table4b
+
+casos_table4a <- table4a %>%
+                  pivot_longer(
+                     cols = c(`1999`, `2000`),
+                     names_to = "year",
+                     values_to = "cases"
+  )
+
+casos_table4a
+
+populacao_table4b <- table4b %>%
+                      pivot_longer(
+                        cols = c(`1999`, `2000`),
+                        names_to = "year",
+                        values_to = "population"
+  )
+
+populacao_table4b
+
+taxa_tabela4 <- casos_table4a %>% 
+                  mutate(taxa = cases/ populacao_table4b$population * 10000)
+taxa_tabela4
+
+```
+
+
+
+
+9.Refaça o gráfico da questão 7 para os dados apresentados em table2.
+
+```{r}
+grafico2 <- ggplot(taxa_tabela2, aes(x = year, y = taxa, group = country, colour = country)) +
+            geom_line() +
+              geom_point() +
+               labs(x = "Ano", y = "Taxa de casos por 10 000 habitantes", color = "País") +
+                  theme_minimal()
+grafico2
+```
+
+
+10. Utilizando o comando pivot_longer, transforme table4a em um objeto no formato tidy. Armazene o resultado num objeto chamado tidy4a.
+
+```{r}
+tidy4a <- table4a %>% 
+                  pivot_longer(
+                    cols = c('1999', '2000'),
+                    names_to = "ano",
+                    values_to = "casos"
+                  )
+```
+
+11.Refaça o item 10 para o objeto table4b. Armazene o resultado num objeto chamado tidy4b.
+
+```{r}
+tidy4b <- table4b %>% 
+                  pivot_longer(
+                    cols = c('1999','2000'),
+                    names_to = "ano",
+                    values_to = "população"
+                  )
+```
+
+12.Combine os objetos tidy4a e tidy4b em um único objeto, utilizando o comando left_join. Apresente uma explicação textual sobre o que faz o referido comando.
+
+```{r}
+
+tabela4 <- left_join(
+            tidy4a,
+            tidy4b,
+            by = c("country", "ano")
+)
+
+tabela4
+
+```
+
+Resposta: o comando left_join compara as linhas da tabela à esquerda com as da direita, mantém as linhas da esquerda e adiciona as linhas diferentes da tabela à direita, formando assim uma única tabela sem conflitos de informações. Caso não haja correspondência, ele não cria uma observação e sim adiciona uma celula NA.No exemplo acima as colunas comparadas foram "country" e "ano", ou seja, quando essas duas informações coincidiram ele pode completar a linha de observações unindo as inforamções contidas nas duas tabelas.
+
+
+
+13.Use o comando pivot_wider para tranformar o objeto table2 em um objeto com formato tidy.
+
+```{r}
+tabela2 <- table2 %>% 
+            pivot_wider(
+              names_from = type,
+              values_from = count
+            )
+
+tabela2
+
+
+```
+
+
+14.Observe que a coluna rate do objeto table3 é um texto mostrando a fração que formaria a taxa de casos de tuberculose. Transforme o objeto table3 em um objeto com formato tidy separando a coluna 3 em duas outras colunas: cases e population, utilizando o comando separate. Utilize o argumento convert para transformar o resultado em um objeto numérico.
+
+```{r}
+tabela3 <- table3 %>% 
+            separate(
+              rate,
+              into = c("cases", "population"),
+              sep = "/",
+              convert = TRUE
+            )
+tabela3
 ```
 

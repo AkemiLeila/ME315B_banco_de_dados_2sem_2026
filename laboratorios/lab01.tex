@@ -1,0 +1,643 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={lab01},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{lab01}
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+\maketitle
+
+\#\#Laboratório 01 \#\#\#Importação e Manipulação de Dados em R Benilton
+Carvalho, Guilherme Ludwig, Tatiana Benaglia
+
+\#\#\#\#Introdução Um conjunto de dados no formato tidy beneficia o
+analista de dados por permitir a manipulação dos mesmos de uma maneira
+unificada. De modo similar, métodos estatísticos são habitualmente
+implementados para receber dados neste formato. Desta maneira, a
+importação e tratamento de dados visando o referido formato reduzirá a
+criação de bancos de dados temporários, evitando problemas difíceis de
+diagnosticar.
+
+Os conjuntos de dados apresentados correspondem ao número de casos de
+tuberculose observados em alguns países, juntamente com seus tamanhos
+populacionais.
+
+\#\#\#\#Objetivos Ao fim deste laboratório, você deverá ser capaz de:
+
+Caracterizar um conjunto de dados no formato tidy; Manipular bases de
+dados, para responder perguntas específicas, utilizando o arcabouço
+implementado via tidyverse, com uso de verbos do pacote dplyr e
+apresentação gráfica de resultados utilizando o pacote ggplot2; Notar
+que responder tais perguntas com bases de dados que não estejam no
+formato tidy requer trabalho adicional;
+
+\#\#\#\#Manipulação de Dados no Formato Tidy 1.Carregue o pacote
+tidyverse
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: pacote 'tidyverse' foi compilado no R versão 4.6.1
+\end{verbatim}
+
+\begin{verbatim}
+## -- Attaching core tidyverse packages ------------------------ tidyverse 2.0.0 --
+## v dplyr     1.2.1     v readr     2.2.0
+## v forcats   1.0.1     v stringr   1.6.0
+## v ggplot2   4.0.3     v tibble    3.3.1
+## v lubridate 1.9.5     v tidyr     1.3.2
+## v purrr     1.2.2     
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+## i Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+\end{verbatim}
+
+2.Apresente os bancos de dados table1, table2, table3, table4a e
+table4b, distribuídos juntamente com o pacote tidyverse. Para cada banco
+de dados, descreva textualmente se ele está no formato tidy e justifique
+cada uma de suas respostas.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{table1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 4
+##   country      year  cases population
+##   <chr>       <dbl>  <dbl>      <dbl>
+## 1 Afghanistan  1999    745   19987071
+## 2 Afghanistan  2000   2666   20595360
+## 3 Brazil       1999  37737  172006362
+## 4 Brazil       2000  80488  174504898
+## 5 China        1999 212258 1272915272
+## 6 China        2000 213766 1280428583
+\end{verbatim}
+
+Resposta: Sim, o banco table1 está em formato tidy, pois as colunas
+representam variaveis e as linhas contém apenas uma observação para cada
+variável
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{table2}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 12 x 4
+##    country      year type            count
+##    <chr>       <dbl> <chr>           <dbl>
+##  1 Afghanistan  1999 cases             745
+##  2 Afghanistan  1999 population   19987071
+##  3 Afghanistan  2000 cases            2666
+##  4 Afghanistan  2000 population   20595360
+##  5 Brazil       1999 cases           37737
+##  6 Brazil       1999 population  172006362
+##  7 Brazil       2000 cases           80488
+##  8 Brazil       2000 population  174504898
+##  9 China        1999 cases          212258
+## 10 China        1999 population 1272915272
+## 11 China        2000 cases          213766
+## 12 China        2000 population 1280428583
+\end{verbatim}
+
+Resposta: Sim, o banco table2 está em formato tidy, pois as colunas
+representam variaveis e as linhas contém apenas uma observação para cada
+variável
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{table3}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 3
+##   country      year rate             
+##   <chr>       <dbl> <chr>            
+## 1 Afghanistan  1999 745/19987071     
+## 2 Afghanistan  2000 2666/20595360    
+## 3 Brazil       1999 37737/172006362  
+## 4 Brazil       2000 80488/174504898  
+## 5 China        1999 212258/1272915272
+## 6 China        2000 213766/1280428583
+\end{verbatim}
+
+Resposta: Não, o banco table3 não está em formato tidy, pois a coluna
+rate esta classificada como e possue duas inforamções em uma única
+variavel, embora numericamente ela possa comunicar uma taxa, as
+informações contidas na coluna são referentes ao ``cases'' e a
+``population''.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{table4a}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 3
+##   country     `1999` `2000`
+##   <chr>        <dbl>  <dbl>
+## 1 Afghanistan    745   2666
+## 2 Brazil       37737  80488
+## 3 China       212258 213766
+\end{verbatim}
+
+Resposta: Não, aqui temos duas colunas cominucando data, o formato longo
+(ou tidy) seria formado por uma tabela contendo país, ano e número de
+casos
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{table4b}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 3
+##   country         `1999`     `2000`
+##   <chr>            <dbl>      <dbl>
+## 1 Afghanistan   19987071   20595360
+## 2 Brazil       172006362  174504898
+## 3 China       1272915272 1280428583
+\end{verbatim}
+
+Resposta: Não, aqui temos duas colunas cominucando data, o formato longo
+(ou tidy) seria formado por uma tabela contendo país, ano e número de
+casos
+
+3.Utilizando comandos do pacote dplyr, determine a taxa de ocorrência de
+tuberculose para cada 10.000 pessoas. Armazene o resultado em um objeto
+chamado taxas.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(dplyr)}
+
+\NormalTok{dados }\OtherTok{\textless{}{-}}\NormalTok{ table1}
+\NormalTok{taxas }\OtherTok{\textless{}{-}}\NormalTok{ dados }\SpecialCharTok{\%\textgreater{}\%}
+        \FunctionTok{mutate}\NormalTok{(}\AttributeTok{taxa =}\NormalTok{ cases}\SpecialCharTok{/}\NormalTok{population }\SpecialCharTok{*} \DecValTok{10000}\NormalTok{)}
+        
+\NormalTok{taxas}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 5
+##   country      year  cases population  taxa
+##   <chr>       <dbl>  <dbl>      <dbl> <dbl>
+## 1 Afghanistan  1999    745   19987071 0.373
+## 2 Afghanistan  2000   2666   20595360 1.29 
+## 3 Brazil       1999  37737  172006362 2.19 
+## 4 Brazil       2000  80488  174504898 4.61 
+## 5 China        1999 212258 1272915272 1.67 
+## 6 China        2000 213766 1280428583 1.67
+\end{verbatim}
+
+4.Apresente, utilizando comandos do pacote dplyr, o número de casos de
+tuberculose por ano.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{casos\_ano }\OtherTok{\textless{}{-}}\NormalTok{ dados }\SpecialCharTok{\%\textgreater{}\%} 
+              \FunctionTok{group\_by}\NormalTok{(year) }\SpecialCharTok{\%\textgreater{}\%} 
+                \FunctionTok{summarise}\NormalTok{(}\AttributeTok{casos =} \FunctionTok{sum}\NormalTok{(cases))}
+\NormalTok{casos\_ano}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 2 x 2
+##    year  casos
+##   <dbl>  <dbl>
+## 1  1999 250740
+## 2  2000 296920
+\end{verbatim}
+
+5.Apresente, utilizando comandos do pacote dplyr, o número de casos de
+tuberculose identificados em cada país.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{casos\_pais }\OtherTok{\textless{}{-}}\NormalTok{ dados }\SpecialCharTok{\%\textgreater{}\%} 
+                \FunctionTok{group\_by}\NormalTok{(country) }\SpecialCharTok{\%\textgreater{}\%} 
+                  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{total =} \FunctionTok{sum}\NormalTok{(cases))}
+\NormalTok{casos\_pais}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 2
+##   country      total
+##   <chr>        <dbl>
+## 1 Afghanistan   3411
+## 2 Brazil      118225
+## 3 China       426024
+\end{verbatim}
+
+6.Utilizando comandos do pacote dplyr, apresente uma tabela que descreva
+a mudança no número de casos, em cada país, ao longo dos anos de 1999 e
+2000.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mudanca\_numero\_casos }\OtherTok{\textless{}{-}}\NormalTok{ dados }\SpecialCharTok{\%\textgreater{}\%} 
+                          \FunctionTok{arrange}\NormalTok{(country, year) }\SpecialCharTok{\%\textgreater{}\%} 
+                            \FunctionTok{group\_by}\NormalTok{(country) }\SpecialCharTok{\%\textgreater{}\%} 
+                              \FunctionTok{mutate}\NormalTok{(}\AttributeTok{mudanca =}\NormalTok{ cases }\SpecialCharTok{{-}} \FunctionTok{lag}\NormalTok{(cases)) }\SpecialCharTok{\%\textgreater{}\%} 
+                                \FunctionTok{filter}\NormalTok{(year }\SpecialCharTok{==} \DecValTok{2000}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+                                  \FunctionTok{select}\NormalTok{(country, mudanca)}
+
+\NormalTok{mudanca\_numero\_casos}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 2
+## # Groups:   country [3]
+##   country     mudanca
+##   <chr>         <dbl>
+## 1 Afghanistan    1921
+## 2 Brazil        42751
+## 3 China          1508
+\end{verbatim}
+
+7.Apresente um gráfico de linhas, preparado via ggplot2, apresentando a
+mudança na taxa de casos (por 10.000 habitantes) estratificado por país.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\NormalTok{grafico }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(taxas, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ year, }\AttributeTok{y =}\NormalTok{ taxa, }\AttributeTok{group =}\NormalTok{ country, }\AttributeTok{colour =}\NormalTok{ country)) }\SpecialCharTok{+}
+            \FunctionTok{geom\_line}\NormalTok{() }\SpecialCharTok{+}
+              \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
+               \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \StringTok{"Ano"}\NormalTok{, }\AttributeTok{y =} \StringTok{"Taxa de casos por 10 000 habitantes"}\NormalTok{, }\AttributeTok{color =} \StringTok{"País"}\NormalTok{) }\SpecialCharTok{+}
+                  \FunctionTok{theme\_minimal}\NormalTok{()}
+\NormalTok{grafico}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{lab01_files/lab01_files/figure-latex/unnamed-chunk-11-1.pdf}}
+8. Calcule a taxa para as tabelas table2 e table4a+table4b. Para isso,
+você precisará executar 4 passos:
+
+Extrair o número de casos de tuberculose por país, por ano; Extrair o
+tamanho da população correspondente, por ano; Dividir o número de casos
+pelo tamanho da população e multiplicar o resultado por 10.000;
+Armazenar o resultado numa variável apropriada;
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#para table2}
+
+\NormalTok{casos\_table2 }\OtherTok{\textless{}{-}}\NormalTok{ table2 }\SpecialCharTok{\%\textgreater{}\%} 
+                  \FunctionTok{filter}\NormalTok{(type }\SpecialCharTok{==} \StringTok{"cases"}\NormalTok{)}
+
+\NormalTok{populacao\_table2 }\OtherTok{\textless{}{-}}\NormalTok{ table2 }\SpecialCharTok{\%\textgreater{}\%} 
+                      \FunctionTok{filter}\NormalTok{(type }\SpecialCharTok{==} \StringTok{"population"}\NormalTok{)}
+\NormalTok{taxa\_tabela2 }\OtherTok{\textless{}{-}}\NormalTok{ casos\_table2 }\SpecialCharTok{\%\textgreater{}\%} 
+                  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{taxa =}\NormalTok{ count}\SpecialCharTok{/}\NormalTok{populacao\_table2}\SpecialCharTok{$}\NormalTok{count }\SpecialCharTok{*} \DecValTok{10000}\NormalTok{)}
+\NormalTok{taxa\_tabela2}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 5
+##   country      year type   count  taxa
+##   <chr>       <dbl> <chr>  <dbl> <dbl>
+## 1 Afghanistan  1999 cases    745 0.373
+## 2 Afghanistan  2000 cases   2666 1.29 
+## 3 Brazil       1999 cases  37737 2.19 
+## 4 Brazil       2000 cases  80488 4.61 
+## 5 China        1999 cases 212258 1.67 
+## 6 China        2000 cases 213766 1.67
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#para table4a + table4b}
+
+\NormalTok{casos\_table4a }\OtherTok{\textless{}{-}}\NormalTok{ table4a }\SpecialCharTok{\%\textgreater{}\%}
+                  \FunctionTok{pivot\_longer}\NormalTok{(}
+                     \AttributeTok{cols =} \FunctionTok{c}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{1999}\StringTok{\textasciigrave{}}\NormalTok{, }\StringTok{\textasciigrave{}}\AttributeTok{2000}\StringTok{\textasciigrave{}}\NormalTok{),}
+                     \AttributeTok{names\_to =} \StringTok{"year"}\NormalTok{,}
+                     \AttributeTok{values\_to =} \StringTok{"cases"}
+\NormalTok{  )}
+
+\NormalTok{casos\_table4a}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 3
+##   country     year   cases
+##   <chr>       <chr>  <dbl>
+## 1 Afghanistan 1999     745
+## 2 Afghanistan 2000    2666
+## 3 Brazil      1999   37737
+## 4 Brazil      2000   80488
+## 5 China       1999  212258
+## 6 China       2000  213766
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{populacao\_table4b }\OtherTok{\textless{}{-}}\NormalTok{ table4b }\SpecialCharTok{\%\textgreater{}\%}
+                      \FunctionTok{pivot\_longer}\NormalTok{(}
+                        \AttributeTok{cols =} \FunctionTok{c}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{1999}\StringTok{\textasciigrave{}}\NormalTok{, }\StringTok{\textasciigrave{}}\AttributeTok{2000}\StringTok{\textasciigrave{}}\NormalTok{),}
+                        \AttributeTok{names\_to =} \StringTok{"year"}\NormalTok{,}
+                        \AttributeTok{values\_to =} \StringTok{"population"}
+\NormalTok{  )}
+
+\NormalTok{populacao\_table4b}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 3
+##   country     year  population
+##   <chr>       <chr>      <dbl>
+## 1 Afghanistan 1999    19987071
+## 2 Afghanistan 2000    20595360
+## 3 Brazil      1999   172006362
+## 4 Brazil      2000   174504898
+## 5 China       1999  1272915272
+## 6 China       2000  1280428583
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{taxa\_tabela4 }\OtherTok{\textless{}{-}}\NormalTok{ casos\_table4a }\SpecialCharTok{\%\textgreater{}\%} 
+                  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{taxa =}\NormalTok{ cases}\SpecialCharTok{/}\NormalTok{ populacao\_table4b}\SpecialCharTok{$}\NormalTok{population }\SpecialCharTok{*} \DecValTok{10000}\NormalTok{)}
+\NormalTok{taxa\_tabela4}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 4
+##   country     year   cases  taxa
+##   <chr>       <chr>  <dbl> <dbl>
+## 1 Afghanistan 1999     745 0.373
+## 2 Afghanistan 2000    2666 1.29 
+## 3 Brazil      1999   37737 2.19 
+## 4 Brazil      2000   80488 4.61 
+## 5 China       1999  212258 1.67 
+## 6 China       2000  213766 1.67
+\end{verbatim}
+
+9.Refaça o gráfico da questão 7 para os dados apresentados em table2.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{grafico2 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(taxa\_tabela2, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ year, }\AttributeTok{y =}\NormalTok{ taxa, }\AttributeTok{group =}\NormalTok{ country, }\AttributeTok{colour =}\NormalTok{ country)) }\SpecialCharTok{+}
+            \FunctionTok{geom\_line}\NormalTok{() }\SpecialCharTok{+}
+              \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
+               \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \StringTok{"Ano"}\NormalTok{, }\AttributeTok{y =} \StringTok{"Taxa de casos por 10 000 habitantes"}\NormalTok{, }\AttributeTok{color =} \StringTok{"País"}\NormalTok{) }\SpecialCharTok{+}
+                  \FunctionTok{theme\_minimal}\NormalTok{()}
+\NormalTok{grafico2}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{lab01_files/lab01_files/figure-latex/unnamed-chunk-14-1.pdf}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{9}
+\tightlist
+\item
+  Utilizando o comando pivot\_longer, transforme table4a em um objeto no
+  formato tidy. Armazene o resultado num objeto chamado tidy4a.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tidy4a }\OtherTok{\textless{}{-}}\NormalTok{ table4a }\SpecialCharTok{\%\textgreater{}\%} 
+                  \FunctionTok{pivot\_longer}\NormalTok{(}
+                    \AttributeTok{cols =} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}1999\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}2000\textquotesingle{}}\NormalTok{),}
+                    \AttributeTok{names\_to =} \StringTok{"ano"}\NormalTok{,}
+                    \AttributeTok{values\_to =} \StringTok{"casos"}
+\NormalTok{                  )}
+\end{Highlighting}
+\end{Shaded}
+
+11.Refaça o item 10 para o objeto table4b. Armazene o resultado num
+objeto chamado tidy4b.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tidy4b }\OtherTok{\textless{}{-}}\NormalTok{ table4b }\SpecialCharTok{\%\textgreater{}\%} 
+                  \FunctionTok{pivot\_longer}\NormalTok{(}
+                    \AttributeTok{cols =} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}1999\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}2000\textquotesingle{}}\NormalTok{),}
+                    \AttributeTok{names\_to =} \StringTok{"ano"}\NormalTok{,}
+                    \AttributeTok{values\_to =} \StringTok{"população"}
+\NormalTok{                  )}
+\end{Highlighting}
+\end{Shaded}
+
+12.Combine os objetos tidy4a e tidy4b em um único objeto, utilizando o
+comando left\_join. Apresente uma explicação textual sobre o que faz o
+referido comando.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tabela4 }\OtherTok{\textless{}{-}} \FunctionTok{left\_join}\NormalTok{(}
+\NormalTok{            tidy4a,}
+\NormalTok{            tidy4b,}
+            \AttributeTok{by =} \FunctionTok{c}\NormalTok{(}\StringTok{"country"}\NormalTok{, }\StringTok{"ano"}\NormalTok{)}
+\NormalTok{)}
+
+\NormalTok{tabela4}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 4
+##   country     ano    casos  população
+##   <chr>       <chr>  <dbl>      <dbl>
+## 1 Afghanistan 1999     745   19987071
+## 2 Afghanistan 2000    2666   20595360
+## 3 Brazil      1999   37737  172006362
+## 4 Brazil      2000   80488  174504898
+## 5 China       1999  212258 1272915272
+## 6 China       2000  213766 1280428583
+\end{verbatim}
+
+Resposta: o comando left\_join compara as linhas da tabela à esquerda
+com as da direita, mantém as linhas da esquerda e adiciona as linhas
+diferentes da tabela à direita, formando assim uma única tabela sem
+conflitos de informações. Caso não haja correspondência, ele não cria
+uma observação e sim adiciona uma celula NA.No exemplo acima as colunas
+comparadas foram ``country'' e ``ano'', ou seja, quando essas duas
+informações coincidiram ele pode completar a linha de observações unindo
+as inforamções contidas nas duas tabelas.
+
+13.Use o comando pivot\_wider para tranformar o objeto table2 em um
+objeto com formato tidy.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tabela2 }\OtherTok{\textless{}{-}}\NormalTok{ table2 }\SpecialCharTok{\%\textgreater{}\%} 
+            \FunctionTok{pivot\_wider}\NormalTok{(}
+              \AttributeTok{names\_from =}\NormalTok{ type,}
+              \AttributeTok{values\_from =}\NormalTok{ count}
+\NormalTok{            )}
+
+\NormalTok{tabela2}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 4
+##   country      year  cases population
+##   <chr>       <dbl>  <dbl>      <dbl>
+## 1 Afghanistan  1999    745   19987071
+## 2 Afghanistan  2000   2666   20595360
+## 3 Brazil       1999  37737  172006362
+## 4 Brazil       2000  80488  174504898
+## 5 China        1999 212258 1272915272
+## 6 China        2000 213766 1280428583
+\end{verbatim}
+
+14.Observe que a coluna rate do objeto table3 é um texto mostrando a
+fração que formaria a taxa de casos de tuberculose. Transforme o objeto
+table3 em um objeto com formato tidy separando a coluna 3 em duas outras
+colunas: cases e population, utilizando o comando separate. Utilize o
+argumento convert para transformar o resultado em um objeto numérico.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tabela3 }\OtherTok{\textless{}{-}}\NormalTok{ table3 }\SpecialCharTok{\%\textgreater{}\%} 
+            \FunctionTok{separate}\NormalTok{(}
+\NormalTok{              rate,}
+              \AttributeTok{into =} \FunctionTok{c}\NormalTok{(}\StringTok{"cases"}\NormalTok{, }\StringTok{"population"}\NormalTok{),}
+              \AttributeTok{sep =} \StringTok{"/"}\NormalTok{,}
+              \AttributeTok{convert =} \ConstantTok{TRUE}
+\NormalTok{            )}
+\NormalTok{tabela3}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 4
+##   country      year  cases population
+##   <chr>       <dbl>  <int>      <int>
+## 1 Afghanistan  1999    745   19987071
+## 2 Afghanistan  2000   2666   20595360
+## 3 Brazil       1999  37737  172006362
+## 4 Brazil       2000  80488  174504898
+## 5 China        1999 212258 1272915272
+## 6 China        2000 213766 1280428583
+\end{verbatim}
+
+\end{document}
