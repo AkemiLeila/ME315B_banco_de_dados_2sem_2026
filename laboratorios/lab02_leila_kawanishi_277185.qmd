@@ -1,7 +1,7 @@
 ---
 title: "lab02_leila_kawanishi_277185"
 author: "Leila Kawanishi"
-format: html
+format: pdf
 editor: visual
 ---
 #Laboratório 2: Processamento de Bases de Dados em Lote
@@ -24,44 +24,96 @@ Ao fim deste laboratório, você deve ser capaz de:
 Observação: a atividade descrita no slide pede para ler apenas 100 registros por vez. Aqui, mudamos para 100 mil registros por vez, para que haja melhor aproveitamento do tempo em classe.
 
 #Instruções
-```{r}
-Sys.setenv(TZ = "America/Sao_Paulo")
 
-paste(
-  "Arquivo compilado em:",
-  format(Sys.time(), "%d/%m/%Y às %H:%M:%S")
-)
-```
 
 1.  Quais são as estatísticas suficientes para a determinação do percentual de vôos atrasados na chegada (ARRIVAL_DELAY > 10)?
 
-```{r}
+Resposta:O percentual de voos (ARRIVAL_DELAY > 10) é dado pela [(numero de voos atrasados)/(numero total de voos)] * 100, neste caso as estatísticas suficientes para o calculo são (numero de voos atrasados) e (numero total de voos). A ideia é diminuir as informações que o computador precisa lidar, ao filtrar os casos de atraso já gera economia no processamento.
 
-```
+
 
 2.  Crie uma função chamada getStats que, para um conjunto de qualquer tamanho de dados provenientes de flights.csv.zip, execute as seguintes tarefas (usando apenas verbos do dplyr:
-- Filtre o conjunto de dados de forma que contenha apenas observações das seguintes Cias. Aéreas: AA, DL, UA e US;
-- Remova observações que tenham valores faltantes em campos de interesse;
-- Agrupe o conjunto de dados resultante de acordo com: dia, mês e cia. aérea;
-- Para cada grupo em b., determine as estatísticas suficientes apontadas no item 1. e os retorne como um objeto da classe tibble;
-- A função deve receber apenas dois argumentos:
-    input: o conjunto de dados (referente ao lote em questão);
-    pos: argumento de posicionamento de ponteiro dentro da base de dados. Apesar de existir na função, este argumento não será empregado internamente. É importante observar que, sem a definição deste argumento, será impossível fazer a leitura por partes.
+
+a. Filtre o conjunto de dados de forma que contenha apenas observações das seguintes Cias. Aéreas: AA, DL, UA e US;
+b. Remova observações que tenham valores faltantes em campos de interesse;
+c. Agrupe o conjunto de dados resultante de acordo com: dia, mês e cia. aérea;
+d. Para cada grupo em b., determine as estatísticas suficientes apontadas no item 1. e os retorne como um objeto da classe tibble;
+e. A função deve receber apenas dois argumentos:
+    - input: o conjunto de dados (referente ao lote em questão);
+    - pos: argumento de posicionamento de ponteiro dentro da base de dados. Apesar de existir na função, este argumento não será empregado internamente. É importante observar que, sem a definição deste argumento, será impossível fazer a leitura por partes.
     
 ```{r}
+library(readr)
 
+dados <- read_csv("C:/Users/USER/Documents/ME315/flights.csv.zip", n_max = 10)
+
+head(dados)
 ```
+    
+    
+```{r}
+library(dplyr)
+
+getStats <- function(input, pos){
+  
+  input %>% 
+    filter(AIRLINE %in% c("AA", "DL","UA","US"),  # filtra Cias. Aéreas: AA, DL, UA e US
+           !is.na(DAY), #filtra NA nos dias
+           !is.na(MONTH), #filtra NA no mes
+           !is.na(ARRIVAL_DELAY)) %>%  #filtra NA no atraso
+   
+    group_by(DAY, MONTH, AIRLINE) %>%  #Agrupa por dia, mes e cia aerea 
+    summarise(
+      n = n(), # conta quantas observações existem em cada grupo
+      atrasados = sum(ARRIVAL_DELAY > 10) #variael que guarda o numero de TRUE para a condição ARRIVAL_DELAY > 10
+    )
+    
+  
+  
+}
+```
+    
+
     
 3.  Utilize alguma função readr::read_***_chunked para importar o arquivo flights.csv.zip.
 
 - Configure o tamanho do lote (chunk) para 100 mil registros;
 - Configure a função de callback para instanciar DataFrames aplicando a função getStats criada acima;
 - Configure o argumento col_types de forma que ele leia, diretamente do arquivo, apenas as colunas de interesse (veja nota de aula para identificar como realizar esta tarefa);
-```{r}
 
+
+```{r setup, include=FALSE}
+
+knitr::opts_knit$set(root.dir = "C:/Users/USER/Documents/ME315")
+getwd()
+```
+
+
+```{r}
+spec(dados)
+  
+banco1 <- read_csv_chunked(
+  "flights.csv.zip",
+  callback = DataFrameCallback$new(getStats), #separa os lotes e aplica o getSatats em cada lote salvando em um DF
+  chunk_size = 100000,#tamanho do chunck
+  col_types = cols_only(
+              AIRLINE = col_character(),
+              DAY = col_integer(),
+              MONTH = col_integer(),
+              ARRIVAL_DELAY = col_double()
+  )
+)
 
 
 ```
+
+```{r}
+head(banco1)
+dim(banco1)
+glimpse(banco1)
+
+```
+
 
 4.  Crie uma função chamada computeStats que:
 
@@ -73,22 +125,87 @@ paste(
 .
 
 ```{r}
+computeStats <- function(stats){
+  
+  stats %>% 
+    group_by(DAY, MONTH, AIRLINE) %>% 
+    summarise(
+      n = sum(n),
+      atrasados = sum(atrasados),
+      .groups = "drop" #nao mantem as colunas dee agrupamento depois do calculo
+    ) %>% 
+    mutate(prop = atrasados / n,
+           Data = as.Date(paste(2015, MONTH, DAY, sep = "-"))) %>% 
+    rename(Cia = AIRLINE,
+           Perc = prop) %>% 
+    select(Cia, Data, Perc)
+}
+
+resultado <- computeStats(banco1)
+
+head(resultado)
+
 
 ```
 
 
 5.  Produza um mapa de calor em formato de calendário para cada Cia. Aérea.
 
-- Instale e carregue os pacotes ggcal e ggplot2.
-- Defina uma paleta de cores em modo gradiente. Utilize o comando scale_fill_gradient. A cor inicial da paleta deve ser #4575b4 e a cor final, #d73027. A paleta deve ser armazenada no objeto pal.
-- Crie uma função chamada baseCalendario que recebe 2 argumentos a seguir: stats (tibble com resultados calculados na questão 4) e cia (sigla da Cia. Aérea de interesse). A função deverá:
-    Criar um subconjunto de stats de forma a conter informações de atraso e data apenas da Cia. Aérea dada por cia.
-    Para o subconjunto acima, montar a base do calendário, utilizando ggcal(x, y). Nesta notação, x representa as datas de interesse e y, os percentuais de atraso para as datas descritas em x.
-    Retornar para o usuário a base do calendário criada acima.
-- Executar a função baseCalendario para cada uma das Cias. Aéreas e armazenar os resultados, respectivamente, nas variáveis: cAA, cDL, cUA e cUS.
-- Para cada uma das Cias. Aéreas, apresente o mapa de calor respectivo utilizando a combinação de camadas do ggplot2. Lembre-se de adicionar um título utilizando o comando ggtitle. Por exemplo, cXX + pal + ggtitle("Titulo").
+a. Instale e carregue os pacotes ggcal e ggplot2.
+b. Defina uma paleta de cores em modo gradiente. Utilize o comando scale_fill_gradient. A cor inicial da paleta deve ser #4575b4 e a cor final, #d73027. A paleta deve ser armazenada no objeto pal.
+c. Crie uma função chamada baseCalendario que recebe 2 argumentos a seguir: stats (tibble com resultados calculados na questão 4) e cia (sigla da Cia. Aérea de interesse). A função deverá:
+    - Criar um subconjunto de stats de forma a conter informações de atraso e data apenas da Cia. Aérea dada por cia.
+    - Para o subconjunto acima, montar a base do calendário, utilizando ggcal(x, y). Nesta notação, x representa as datas de interesse e y, os percentuais de atraso para as datas descritas em x.
+    - Retornar para o usuário a base do calendário criada acima.
+d. Executar a função baseCalendario para cada uma das Cias. Aéreas e armazenar os resultados, respectivamente, nas variáveis: cAA, cDL, cUA e cUS.
+e. Para cada uma das Cias. Aéreas, apresente o mapa de calor respectivo utilizando a combinação de camadas do ggplot2. Lembre-se de adicionar um título utilizando o comando ggtitle. Por exemplo, cXX + pal + ggtitle("Titulo").
 
 ```{r}
+# install.packages("remotes")
+# remotes::install_github("jayjacobs/ggcal")
+# install.packages("ggplot2")
+library(ggcal)
+library(ggplot2)
 
+pal <- scale_fill_gradient(low = "#4575b4", high = "#d73027")
+
+baseCalendario <-  function(stats, cia){
+  
+ dados_cia <-  stats %>% 
+                filter(Cia == cia) %>% 
+                  select(Data, Perc) 
+ 
+    ggcal(dates = dados_cia$Data, fills = dados_cia$Perc)
+    
+}
+
+
+cAA <- baseCalendario(resultado, "AA")
+cDL <- baseCalendario(resultado, "DL")
+cUA <- baseCalendario(resultado, "UA")
+cUS <- baseCalendario(resultado, "US")
+
+```
+
+```{r}
+cAA + pal + ggtitle("AA")
+```
+```{r}
+
+cDL + pal + ggtitle("DL")
+```
+```{r}
+
+
+cDL + pal + ggtitle("UA")
+```
+```{r}
+
+cDL + pal + ggtitle("US")
+```
+
+```{r}
+Sys.setenv(TZ = "America/Sao_Paulo")
+Sys.time()
 ```
 
