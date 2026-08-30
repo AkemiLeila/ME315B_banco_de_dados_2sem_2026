@@ -1,0 +1,71 @@
+---
+title: "lab03_leila_kawanishi_277185"
+author: "Leila Kawanishi"
+format: pdf
+editor: visual
+---
+# Laboratório 3: Dados relacionais e operações do tipo join
+Benilton Carvalho, Guilherme Ludwig
+
+
+##  Introdução
+Conjuntos de dados estruturados costumam ser divididos em múltiplas tabelas. A razão para isso é a minimização de duplicação de informação. Por este motivo, uma tarefa habitualmente realizada em manipulação de bases de dados é a combinação de dados de diferentes origens.
+
+##  Objetivos
+Ao fim deste laboratório, você deve ser capaz de combinar duas tabelas de dados, de forma que, na tabela resultante, sejam mantidos registros que existam:
+
+- em ambas as tabelas;
+- apenas na primeira tabela;
+- apenas na segunda tabela;
+- em alguma das duas tabelas.
+
+Adicionalmente, você deve ser capaz de identificar registros que existam:
+
+- apenas na primeira tabela;
+- apenas na segunda tabela;
+
+##  Carregue os pacotes relevantes para este Laboratório
+
+# Atrasos de vôos
+Considere novamente o problema de atrasos de vôos, disponível em https://www.kaggle.com/usdot/flight-delays. Nesta atividade, além dos dados de flights.csv, nós iremos utilizar informações disponíveis nos arquivos airlines.csv e airports.csv.
+
+
+1.  Importe, utilizando o pacote readr, cada um dos três arquivos disponíveis. Os objetos resultantes devem ser chamados flights, airlines e airports.
+
+- Para o arquivo de aeroportos, importe apenas as colunas IATA_CODE, CITY, STATE, LATITUDE, LONGITUDE;
+- Para o arquivo de vôos:
+    Importe apenas as colunas DESTINATION_AIRPORT e ARRIVAL_DELAY;
+    Leia apenas 1 milhão de linhas por vez;
+    Remova vôos em que o aeroporto de destino comece com a letra 1;
+    Remova registros em que existam pelo menos uma coluna faltante;
+    Determine, para cada parte do arquivo, as estatísticas suficientes para a determinação do   atraso médio por aeroporto de destino;
+    Ao finalizar a leitura do arquivo, combine as estatísticas suficientes de modo a produzir a média de atraso por aeroporto.
+    
+    
+    
+    
+    
+    
+2.  Selecione a operação apropriada join para incluir, na tabela flights, as colunas CITY e STATE do objeto airports. Para executar esta tarefa:
+
+- Identifique a coluna que é a chave na tabela flights;
+- Identifique a coluna que é a chave na tabela airports;
+- Quais são os aeroportos que estão listados em flights, mas estão ausentes em airports?
+- Apresente o comando que combine ambas as tabelas, indicando explicitamente as chaves;
+- Armazene a tabela resultante no objeto flights.
+
+
+
+3.  Quantos aeroportos cada estado possui? Apresente uma tabela ordenada de forma decrescente (no número de aeroportos).
+
+
+
+
+
+
+4.  Apresente um mapa representando todos os atrasos observados por aeroporto.
+
+- Carregue o pacote leaflet;
+- Combine os comandos leaflet, addTiles e addMarkers para a criação de um mapa básico;
+- Armazene o grafico em b) numa variável chamada this;
+- Adicione as duas linhas abaixo após a criação da variável this (apenas se você estiver usando Jupyter):

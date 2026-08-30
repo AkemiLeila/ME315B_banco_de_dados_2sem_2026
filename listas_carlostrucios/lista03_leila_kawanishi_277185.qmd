@@ -1,0 +1,151 @@
+---
+title: "lista03_leila_kawanishi_277185"
+author: "Leila Kawanishi"
+format: pdf
+editor: visual
+---
+
+## DISTINCT, AND-OR-NOT
+Aprenda a utilizar DISTINCT e os operadores AND, OR, NOT para selecionar e filtrar dados em tabelas SQL.
+```{r}
+#install.packages("DBI")
+library(DBI)
+library(RSQLite)
+
+
+```
+
+```{r}
+con <- dbConnect(SQLite(),"datasets/me315.sqlite")
+```
+
+##  Hands-On
+
+1.  Exiba os valores de `STATE` e `FEE` da tabela `PRESERVE` mas sem duplicados.
+
+```{sql connection=}
+
+```
+
+
+2.  Exiba todos os valores de `DNO` na tabela `EMPLOYEE`. Não exiba valores duplicados.
+
+
+ 3. Execute as queries a seguir. Examine as tabelas resultantes e faça as observações relevantes.
+
+
+```sql
+SELECT DNO, SALARY FROM EMPLOYEE;
+```
+
+```sql
+SELECT DISTINCT DNO, SALARY FROM EMPLOYEE;
+```
+
+```sql
+SELECT DISTINCT DNO, SALARY FROM EMPLOYEE 
+ORDER BY DNO, SALARY;
+```
+
+
+
+4.  Exiba todas as informações sobre qualquer reserva natural em Montana que seja menor que 1.000 acres.
+
+
+
+5.  Exiba todas as informações sobre qualquer reserva natural cujo valor de `ACRES` esteja entre 1200 e 15000, inclusive.
+
+
+6.  Exiba todas as informações sobre qualquer reserva natural localizada em Montana que não possua taxa de entrada e seja maior que 10.000 acres.
+
+
+7.  Exiba todas as informações sobre as reservas naturais localizadas em Montana ou Massachusetts.
+
+
+8.  Exiba todas as informações sobre qualquer reserva natural localizada em Montana ou qualquer reserva que seja menor que 1.000 acres.
+
+
+9.  Exiba o número e o nome de qualquer reserva natural que possua taxa de entrada que não seja igual a zero.
+
+
+10. Exiba o número e o nome das reservas naturais que não possuem taxa de entrada de US\$ 3,00 e não possuem taxa de US\$ 10,00.
+
+
+11. Exiba todas as informações sobre qualquer reserva natural localizada no Arizona que não possua taxa de entrada, ou qualquer reserva que seja menor que 100 acres (independentemente de seus valores de `STATE` e `FEE`).
+
+
+12. Exiba todas as informações sobre qualquer reserva natural que seja menor que 1.000 acres e tenha taxa de entrada de zero dólares ou esteja localizada no Arizona.
+
+
+13. Selecione todas as informações sobre qualquer reserva natural com taxa de entrada que não seja maior que zero, ou qualquer outra reserva, independentemente de sua taxa, que esteja localizada em Montana e seja maior que 1.000 acres.
+
+
+14. Exiba todas as informações sobre todas as reservas naturais, exceto aquelas reservas de Montana sem taxa de entrada.
+
+
+
+15. As seguintes cláusulas `WHERE` são logicamente equivalentes?
+
+
+```sql 
+WHERE STATE = 'MA' AND (ACRES > 1000 OR FEE = 0.0)
+```
+
+```sql
+WHERE (STATE = 'MA' AND ACRES > 1000)  OR (STATE = 'MA' AND FEE = 0.0)
+```
+
+16. As seguintes cláusulas `WHERE` são logicamente equivalentes?
+
+
+
+```sql
+WHERE STATE = 'MA'   OR (ACRES > 1000 AND FEE = 0.0)
+```
+
+```sql
+WHERE (STATE = 'MA' OR ACRES > 1000)  AND (STATE = 'MA' OR FEE = 0.0)
+```
+
+17. As seguintes cláusulas `WHERE` são logicamente equivalentes?
+
+
+
+```sql
+WHERE NOT (ACRES < 50 AND STATE = 'MA')
+```
+
+```sql
+WHERE NOT ACRES < 50 AND NOT STATE = 'MA'
+```
+
+```sql
+WHERE ACRES >= 50  OR STATE <> 'MA'
+```
+
+ 18. As seguintes cláusulas `WHERE` são logicamente equivalentes?
+
+
+
+```sql
+WHERE NOT (ACRES < 50 OR STATE = 'MA')
+```
+
+```sql
+WHERE NOT ACRES < 50 OR NOT STATE = 'MA'
+```
+
+```sql
+WHERE NOT ACRES < 50 AND NOT STATE = 'MA'
+```
+
+
+```{r}
+Sys.setenv(TZ = "America/Sao_Paulo")
+
+paste(
+  "Arquivo compilado em:",
+  format(Sys.time(), "%d/%m/%Y às %H:%M:%S")
+)
+```
+
