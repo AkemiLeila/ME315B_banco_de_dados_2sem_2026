@@ -11,24 +11,39 @@ Aprenda a utilizar DISTINCT e os operadores AND, OR, NOT para selecionar e filtr
 #install.packages("DBI")
 library(DBI)
 library(RSQLite)
-
-
 ```
+
 
 ```{r}
-con <- dbConnect(SQLite(),"datasets/me315.sqlite")
+#CONEXÃO DO R COM SQL
+con <- dbConnect(SQLite(), "../datasets/me315.sqlite")
 ```
+
+```{sql connection=con}
+-- VERIFICAR A TABELA INTEIRA
+SELECT* FROM PRESERVE
+
+```
+
+```{sql connection=con}
+--VERIFICAR TABELA INTEIRA EMPLOYEE
+SELECT * FROM EMPLOYEE
+```
+
 
 ##  Hands-On
 
 1.  Exiba os valores de `STATE` e `FEE` da tabela `PRESERVE` mas sem duplicados.
 
-```{sql connection=}
-
+```{sql connection=con}
+SELECT DISTINCT STATE,FEE FROM PRESERVE
 ```
 
 
 2.  Exiba todos os valores de `DNO` na tabela `EMPLOYEE`. Não exiba valores duplicados.
+```{sql connection=con}
+SELECT DISTINCT DNO FROM EMPLOYEE
+```
 
 
  3. Execute as queries a seguir. Examine as tabelas resultantes e faça as observações relevantes.
@@ -37,51 +52,117 @@ con <- dbConnect(SQLite(),"datasets/me315.sqlite")
 ```sql
 SELECT DNO, SALARY FROM EMPLOYEE;
 ```
+```{sql connection=con}
+SELECT DNO, SALARY FROM EMPLOYEE
+```
+Resposta: A query pede que sejam selecionados todas as observações das colunas DNO e SALARY da tabela EMPLOYEE, ou seja, ela exibe todos os valores contindos na tabela geral, separando apenas as colunas de interesse. Aqui ela não especifica nada.
 
 ```sql
 SELECT DISTINCT DNO, SALARY FROM EMPLOYEE;
 ```
+```{sql connection=con}
+SELECT DISTINCT DNO, SALARY FROM EMPLOYEE
+```
+Resposta: Aqui a query pede que sejam selecionados todas as observações das colunas DNO sem duplicidade e todas as observações de SALARY da tabela EMPLOYEE, ou seja, como as observações de DNO estão atreladas às de SALARY, mesmo que a query peça a não duplicidade, não há, no banco de dados, duplicidade dessas informações juntas. Então a saída revela a tabela completa, não causando efeito diferente algum, além de dar mais funções para que o computador execute sem um objetivo final significativo.
+
 
 ```sql
 SELECT DISTINCT DNO, SALARY FROM EMPLOYEE 
 ORDER BY DNO, SALARY;
 ```
 
+```{sql connection=con}
+SELECT DISTINCT DNO, SALARY FROM EMPLOYEE 
+ORDER BY DNO, SALARY
+```
+
+Resposta: Aqui a query pede que sejam selecionados todas as observações das colunas DNO sem duplicidade e todas as observações de SALARY da tabela EMPLOYEE, no entanto, diferente da query acima, ele pede uma ordenação específica. Mesmo que o banco novamente tenha sido reproduzido inteiro para as colunas selecionadas e a função DISTINCT não ter tido efeito algum, o order by deixa o DNO crescente como primeiro critério de ordenação e o SALARY crescente como segundcritério de ordenação.
+
+
 
 
 4.  Exiba todas as informações sobre qualquer reserva natural em Montana que seja menor que 1.000 acres.
+```{sql connection=con}
+SELECT * FROM PRESERVE
+WHERE STATE = 'MT' AND ACRES <= 1000
+```
 
 
 
 5.  Exiba todas as informações sobre qualquer reserva natural cujo valor de `ACRES` esteja entre 1200 e 15000, inclusive.
 
+```{sql connection=con}
+SELECT * FROM PRESERVE
+WHERE ACRES >= 1200 AND ACRES <= 15000
+```
+
 
 6.  Exiba todas as informações sobre qualquer reserva natural localizada em Montana que não possua taxa de entrada e seja maior que 10.000 acres.
 
+```{sql connection=con}
+SELECT * FROM PRESERVE
+WHERE STATE = 'MT' AND FEE = 0 AND ACRES > 10000
+```
 
 7.  Exiba todas as informações sobre as reservas naturais localizadas em Montana ou Massachusetts.
 
+```{sql connection=con}
+SELECT * FROM PRESERVE
+WHERE STATE = 'MT' OR STATE = 'MA'
+```
 
 8.  Exiba todas as informações sobre qualquer reserva natural localizada em Montana ou qualquer reserva que seja menor que 1.000 acres.
 
+```{sql connection=con}
+SELECT * FROM PRESERVE
+WHERE STATE = 'MT' OR ACRES < 1000
+```
 
 9.  Exiba o número e o nome de qualquer reserva natural que possua taxa de entrada que não seja igual a zero.
+
+```{sql connection=con}
+SELECT PNO, PNAME FROM PRESERVE
+WHERE NOT FEE = 0
+```
 
 
 10. Exiba o número e o nome das reservas naturais que não possuem taxa de entrada de US\$ 3,00 e não possuem taxa de US\$ 10,00.
 
+```{sql connection=con}
+SELECT PNO, PNAME FROM PRESERVE
+WHERE NOT FEE = 3 AND NOT FEE = 10
+```
+
 
 11. Exiba todas as informações sobre qualquer reserva natural localizada no Arizona que não possua taxa de entrada, ou qualquer reserva que seja menor que 100 acres (independentemente de seus valores de `STATE` e `FEE`).
+
+```{sql connection=con}
+SELECT * FROM PRESERVE
+WHERE (STATE = 'AZ' AND FEE = 0) OR (ACRES < 100)
+```
 
 
 12. Exiba todas as informações sobre qualquer reserva natural que seja menor que 1.000 acres e tenha taxa de entrada de zero dólares ou esteja localizada no Arizona.
 
+```{sql connection=con}
+SELECT * FROM PRESERVE
+WHERE (ACRES < 1000 AND FEE = 0) OR (STATE = 'AZ')
+```
 
 13. Selecione todas as informações sobre qualquer reserva natural com taxa de entrada que não seja maior que zero, ou qualquer outra reserva, independentemente de sua taxa, que esteja localizada em Montana e seja maior que 1.000 acres.
+
+```{sql connection=con}
+SELECT * FROM PRESERVE
+WHERE (NOT FEE > 0) OR (STATE = 'MT' AND ACRES > 1000)
+```
 
 
 14. Exiba todas as informações sobre todas as reservas naturais, exceto aquelas reservas de Montana sem taxa de entrada.
 
+```{sql connection=con}
+SELECT * FROM PRESERVE
+WHERE NOT (STATE = 'MT' AND FEE = 0)
+```
 
 
 15. As seguintes cláusulas `WHERE` são logicamente equivalentes?
@@ -90,25 +171,29 @@ ORDER BY DNO, SALARY;
 ```sql 
 WHERE STATE = 'MA' AND (ACRES > 1000 OR FEE = 0.0)
 ```
-
 ```sql
 WHERE (STATE = 'MA' AND ACRES > 1000)  OR (STATE = 'MA' AND FEE = 0.0)
 ```
 
-16. As seguintes cláusulas `WHERE` são logicamente equivalentes?
+Resposta: sim, por propriedade distributiva A e (B ou C) = (A e B) ou (A e C).
 
+
+
+16. As seguintes cláusulas `WHERE` são logicamente equivalentes?
 
 
 ```sql
 WHERE STATE = 'MA'   OR (ACRES > 1000 AND FEE = 0.0)
 ```
-
 ```sql
 WHERE (STATE = 'MA' OR ACRES > 1000)  AND (STATE = 'MA' OR FEE = 0.0)
+
+
 ```
+Resposta: também pela propriedade distributiva A ou (B e C) = (A ou B) e (A ou C)
+
 
 17. As seguintes cláusulas `WHERE` são logicamente equivalentes?
-
 
 
 ```sql
@@ -123,9 +208,12 @@ WHERE NOT ACRES < 50 AND NOT STATE = 'MA'
 WHERE ACRES >= 50  OR STATE <> 'MA'
 ```
 
+Resposta: Apenas a primeira e a terceira clausulas sao equivalentes, porque ~(A e B) por De Morgan é igual a (~A ou ~B) que equivale a Acomplementar ou Bcomplementar, no entando, a segunda afirmação cai pela própria Lei de De morgan que diz que (~A e ~B) equivale a ~(A ou B).
+
+
+
+
  18. As seguintes cláusulas `WHERE` são logicamente equivalentes?
-
-
 
 ```sql
 WHERE NOT (ACRES < 50 OR STATE = 'MA')
@@ -138,6 +226,8 @@ WHERE NOT ACRES < 50 OR NOT STATE = 'MA'
 ```sql
 WHERE NOT ACRES < 50 AND NOT STATE = 'MA'
 ```
+
+Resposta: Agora por De Morgan temos que ~(A ou B) é igual a ~A e ~B, ou seja, a primeira e a terceira clausulas sao equivalentes. Já ~A ou ~B seria aquivalente a ~(A e B)
 
 
 ```{r}
