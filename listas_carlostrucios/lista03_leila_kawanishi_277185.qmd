@@ -10,14 +10,16 @@ editor: visual
 Aprenda a utilizar DISTINCT e os operadores AND, OR, NOT para selecionar e filtrar dados em tabelas SQL.
 
 ```{r}
-install.packages("DBI")
+#install.packages("DBI")
 library(DBI)
 library(RSQLite)
 ```
 
 ```{r}
 #CONEXÃO DO R COM SQL
-con <- dbConnect(SQLite(), "./me315.sqlite")
+con <- dbConnect(SQLite(), "../me315.sqlite")
+
+dbListTables(con)
 ```
 
 ```{sql connection=con}

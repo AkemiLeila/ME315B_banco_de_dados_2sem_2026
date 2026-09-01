@@ -6,7 +6,7 @@ editor: visual
 ---
 
 ```{r}
-# install.packages("DBI")
+#install.packages("DBI")
 # install.packages("RSQLite")
 library(DBI)
 library(RSQLite)
@@ -15,7 +15,8 @@ library(RSQLite)
 
 ```{r}
 #conexão com SQL
-con <- dbConnect(SQLite(), "C:/Users/USER/Downloads/SQL4Statisticians-main/SQL4Statisticians-main/datasets/me315.sqlite")
+con <- dbConnect(SQLite(),"../me315.sqlite")
+dbListTables(con)
 ```
 
 ```{r}
@@ -124,4 +125,3 @@ ORDER BY DNO DESC, ENO
 Sys.setenv(TZ = "America/Sao_Paulo")
 Sys.time()
 ```
-
