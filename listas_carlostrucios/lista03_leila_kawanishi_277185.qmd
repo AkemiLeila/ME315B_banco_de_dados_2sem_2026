@@ -10,14 +10,14 @@ editor: visual
 Aprenda a utilizar DISTINCT e os operadores AND, OR, NOT para selecionar e filtrar dados em tabelas SQL.
 
 ```{r}
-#install.packages("DBI")
+install.packages("DBI")
 library(DBI)
 library(RSQLite)
 ```
 
 ```{r}
 #CONEXÃO DO R COM SQL
-con <- dbConnect(SQLite(), "../datasets/me315.sqlite")
+con <- dbConnect(SQLite(), "./me315.sqlite")
 ```
 
 ```{sql connection=con}
@@ -176,7 +176,6 @@ WHERE STATE = 'MA'   OR (ACRES > 1000 AND FEE = 0.0)
 
 ``` sql
 WHERE (STATE = 'MA' OR ACRES > 1000)  AND (STATE = 'MA' OR FEE = 0.0)
-
 ```
 
 Resposta: também pela propriedade distributiva A ou (B e C) = (A ou B) e (A ou C)
