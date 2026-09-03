@@ -1,0 +1,28 @@
+---
+title: "aula 04"
+format: html
+editor: visual
+---
+```{r}
+library(DBI)
+library(RSQLite)
+
+con <- dbConnect(RSQLite::SQLite(), "datasets/me315.sqlite")
+```
+
+1.  Exiba os valores de ´PNO´, ´PNAME´ e ´ACRES´ de qualquer reserva natural que possua um valor de ACRES igual a um dos seguintes valores: {40, 90, 630, 660}.
+```{sql connection=con}
+
+SELECT PNO, PNAME, ACRES FROM PRESERVE
+WHERE ACRES IN (40, 90, 360, 660)
+```
+
+
+2.  Exiba o `PNO`, `PNAME` e `STATE` de qualquer reserva natural que não esteja localizada no Arizona e não esteja localizada em Montana.
+```{sql connection=con}
+
+SELECT PNO, PNAME, STATE FROM PRESERVE
+WHERE STATE NOT IN ('AZ', 'MT')
+
+```
+
