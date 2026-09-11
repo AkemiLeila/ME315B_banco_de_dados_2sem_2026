@@ -119,17 +119,18 @@ WHERE PNAME LIKE '%M%E%'
 ```
 
 13. Exiba o nome de qualquer reserva natural que tenha a letra ‘A’ na segunda posição.
+
 ```{sql connection=con}
 SELECT PNAME FROM PRESERVE
 WHERE PNAME LIKE '_A%'
 ```
 
 14. Exiba o nome de qualquer reserva natural que tenha um espaço em branco em qualquer lugar do seu nome.
+
 ```{sql connection=con}
 SELECT PNAME FROM PRESERVE
 WHERE PNAME LIKE '% %'
 ```
-
 
 15. Exiba o nome de qualquer reserva natural que tenha ‘FARM’, ‘SWAMP’ ou ‘PRAIRIE’ em qualquer lugar do seu nome.
 
@@ -141,6 +142,7 @@ WHERE PNAME LIKE '%FARM%'
 ```
 
 16. Exiba o nome de qualquer reserva natural com um ponto ou um hífen em qualquer lugar do seu nome.
+
 ```{sql connection=con}
 SELECT PNAME FROM PRESERVE
 WHERE PNAME LIKE '%.%'
@@ -148,6 +150,7 @@ WHERE PNAME LIKE '%.%'
 ```
 
 17. Exiba o nome de qualquer reserva natural que tenha a letra ‘R’ na quinta posição e termine com ‘PRAIRIE’.
+
 ```{sql connection=con}
 SELECT PNAME FROM PRESERVE
 WHERE PNAME LIKE '____R%'
@@ -157,11 +160,11 @@ WHERE PNAME LIKE '____R%'
 # Os seguintes exercícios utilizam a tabela EMPLOYEE.
 
 18. Exiba todas as informações sobre qualquer funcionário que trabalhe em um departamento com um valor de DNO na seguinte lista: {10, 40}.
+
 ```{sql connection=con}
 SELECT * FROM EMPLOYEE
 WHERE DNO IN (10, 40)
 ```
-
 
 19. Exiba todas as informações sobre qualquer funcionário que trabalhe em um departamento com um valor de DNO que não esteja na seguinte lista: {10, 40}.
 
@@ -178,6 +181,7 @@ WHERE SALARY BETWEEN 500 AND 2000
 ```
 
 21. Exiba todas as informações sobre qualquer funcionário cujo salário seja menor que \$500,00 ou maior que \$2.000,00.
+
 ```{sql connection=con}
 SELECT * FROM EMPLOYEE
 WHERE SALARY NOT BETWEEN 500 AND 2000
