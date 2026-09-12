@@ -15,38 +15,165 @@ conjunto de dados flights. Para tanto, considere os seguintes fatos:
 -  (Exemplo hipotético) No dia 01/01/2015, a aeronave N431WN viaja de BWI para JFK;
 -  (Exemplo hipotético) No dia 02/01/2015, a aeronave N431WN viaja de JFK para ORD‘;
 -  E assim sucessivamente. . .
+
 No caso apontado acima, pode-se ver que a aeronave N431WN realizou um trajeto (provavelmente único)
 durante todo o ano de 2015. Nos dias exemplificados, o trajeto foi BWI-JFK-ORD.
 
-##  Parte 1:
-Crie uma função que:
+
+##  Crie uma função que:
 a. Receba um valor de TAIL_NUMBER (por exemplo, N431WN);
 b. Produza uma tabela (tidy) com todos os trajetos realizados pela aeronave (ordenadas por data e hora,
-contendo todas as colunas do arquivo flights.csv.zip);
+  contendo todas as colunas do arquivo flights.csv.zip);
 c. Produza um mapa que apresente todo o trajeto voado pela aeronave ao longo de todo o ano; o trajeto
 deve ser apresentado de maneira linear no tempo (i.e., segue a sequência do tempo, como no exemplo
 hipotético dado acima);
 d. O mapa deve ser decorado com estatísticas do seu interesse (por exemplo, velocidade média do vôo
 como espessura da linha que conecta os aeroportos envolvidos no trajeto);
 
-## Parte 2:
-a. Seu código deve ser bem comentado;
-b. Os nomes das variáveis devem ser esclarecedores (por exemplo, x é um nome ruim);
-c. Seu código será avaliado por 5 de seus colegas;
-d. A parte de avaliação (descrita em c.) acontecerá na semana de 23 a 27 de setembro (com entrega
-obrigatória no dia 27);
 
-##  Observações:
-1. A função terá o argumento tail_number e arquivo;
-2. O argumento tail_number será o código identificador do avião de interesse (por ex., N431WN);
-3. O argumento arquivo será o nome do arquivo com caminho completo (por ex., file.path("dados",
-"flights.csv.zip"));
-4. A função se chamará analisa_aeronave;
-5. O arquivo deve ser lido por partes;
-6. O mapa deve utilizar as coordenadas exatas dos aeroportos envolvidos (presentes no arquivo airports);
-7. A função deve retornar uma lista (nomeada) com dois valores: a tabela utilizada para o gráfico e o
-gráfico propriamente dito;
-8. O Jupyter não será suficiente para a realização da tarefa; utilize o RStudio; o laboratório continuará
-disponível nos horários da aula;
-9. O código deverá ser submetido via Moodle até o dia 23 de setembro, às 10 da manhã (em área exclusiva
-a ser disponibilizada oportunamente).
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(leaflet) #creates interactive maps
+library(ggcal)#creats calendars 
+```
+
+
+```{r}
+#to examine the table before preparing the section-by-section reading
+flights_amostra <- read_csv("../flights.csv",
+                            n_max = 5)
+glimpse(flights_amostra)
+
+```
+```{r}
+#Creanting the function
+
+analisa_aeronave <- function(tail_number, arquivo){ #accepts arguments "tail_number" e "arquivo"
+  
+  
+#select the aircraft
+   pega_aeronave <- function(data, pos){ 
+    
+    data %>% # "data" refers to each  piece that read_csv_chunked deliver
+      filter(TAIL_NUMBER == tail_number) #retains only the aircraft passed to the function
+ 
+    }
+
+   callback <- DataFrameCallback$new(pega_aeronave) #for each piece you read, execute "pega_aeronave" function
+   
+   #We read the file in chunks
+   voos <- read_csv_chunked(arquivo,
+                    callback = callback,
+                    chunk_size = 100000
+  )
+   
+ #create and organized date and time 
+  voos <- voos %>%
+  mutate(
+    data = as.Date(
+      paste(YEAR, MONTH, DAY, sep = "-")
+    ),
+    
+    hora = paste0(
+      substr(DEPARTURE_TIME, 1, 2),
+      ":",
+      substr(DEPARTURE_TIME, 3, 4)
+    ),
+    
+    data_hora = as.POSIXct(
+      paste(data, hora),
+      format = "%Y-%m-%d %H:%M"
+    )
+  ) %>%
+  arrange(data_hora)
+  
+  
+#loads database airpots
+  
+ aeroportos <- read_csv("../airports.csv")
+
+ #select the coordinators
+aeroportos_coord <- aeroportos %>%
+                       select(IATA_CODE, LATITUDE, LONGITUDE) #selects only the columns of interest from the database
+
+
+#renames the origin and destination latitudes and longitudes
+aero_origem <- aeroportos_coord %>%
+                 rename(ORIGIN_LAT = LATITUDE,
+                        ORIGIN_LON = LONGITUDE
+                         )
+aero_destino <- aeroportos_coord %>%
+                  rename(DEST_LAT = LATITUDE,
+                         DEST_LON = LONGITUDE
+                         )
+
+#combines flights.csv table with the coordinates of the origin and destination from de airports.csv
+voos <- voos %>%
+         left_join(aero_origem,
+                   by = c("ORIGIN_AIRPORT" = "IATA_CODE")) %>%
+          left_join(aero_destino,
+                   by = c("DESTINATION_AIRPORT" = "IATA_CODE")
+   
+                      )
+
+#calculates speed
+voos <- voos %>%
+  mutate(
+    VELOCIDADE = DISTANCE / (AIR_TIME / 60)
+  )
+
+#creates map
+mapa <- leaflet() %>%
+  addTiles()
+
+#draw each flight
+for (i in 1:nrow(voos)) {
+  
+  mapa <- mapa %>%
+    addPolylines(
+      lat = c(voos$ORIGIN_LAT[i], voos$DEST_LAT[i]),
+      lng = c(voos$ORIGIN_LON[i], voos$DEST_LON[i]),
+      weight = voos$VELOCIDADE[i] / 100
+    )
+}
+
+#return table and map
+return(
+    list(
+      tabela = voos,
+      mapa = mapa
+    )
+  )
+
+
+}
+
+
+```
+
+```{r}
+resultado <- analisa_aeronave("N431WN", "../flights.csv")
+names(resultado)
+dim(resultado$tabela)
+
+```
+```{r}
+resultado$tabela
+```
+
+```{r}
+resultado$mapa
+```
+
+
+
+
+```{r}
+Sys.setenv(TZ = "America/Sao_Paulo")
+
+paste(
+  "Arquivo compilado em:",
+  format(Sys.time(), "%d/%m/%Y às %H:%M:%S")
+)
+```
