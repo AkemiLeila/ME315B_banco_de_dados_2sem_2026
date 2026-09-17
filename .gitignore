@@ -6,3 +6,4 @@
 *.zip
 *.zip
 flights.csv
+archive/database.sqlite3

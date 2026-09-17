@@ -1,0 +1,342 @@
+---
+title: "lab7_leila_kawanishi_277185"
+author: "Leila Kawanishi"
+format: pdf
+editor: visual
+---
+
+# SQLite - Parte II
+Benilton Carvalho, Guilherme Ludwig
+
+O SQLite é uma biblioteca embutida em um processo único que é autônomo, não necessita de servidor e exige zero de configuração. O código é de domínio público e seu uso é gratuito em qualquer tipo de utilização. Trata-se de um sistema SQL completo, capaz de utilizar múltiplas tabelas, índices, gatilhos e visões. Ele funciona, virtualmente, em qualquer plataforme (incluindo móveis) e pesa cerca de 600KB.
+
+##  Objetivos
+Ao fim deste laboratório, você deverá ser capaz de:
+
+- Conectar-se a um banco de dados do tipo SQLite utilizando o R como interface;
+- Explorar quais são as tabelas disponíveis no referido banco de dados;
+- Identificar quais são as colunas de uma dada tabela existente no banco de dados;
+- Realizar pesquisas simples;
+- Extrair registros do banco de dados e armazená-las em objetos do R;
+- Realizar algumas pesquisas complexas, utilizando WHERE, INNER JOIN.
+- Criar novas tabelas no banco de dados.
+
+Fonte do problema:
+Estes dados são de uma iniciativa de publicidade de desempenho de alunos e professores nas Universidades Americanas. A UW-Madison disponibilizou os seus dados online (no Office of the Registrar: https://registrar.wisc.edu/), e alguém trouxe os dados para uma competição no Kaggle (https://www.kaggle.com/Madgrades/uw-madison-courses). Nesta atividades, examinaremos disciplinas oferecidas no assunto de Estatística pela referida Universidade. O esquema do banco de dados é apresentado na figura abaixo.
+
+
+##  Atividade
+Baixe o arquivo uwmadison.sqlite3. Conecte-se a ele usando o pacote RSQLite, armazenando a conexão em uma variável conn.
+```{r}
+library(RSQLite)
+conn <- dbConnect(SQLite(), '../archive/database.sqlite3')
+dbListTables(conn)
+```
+
+
+Quem são e quantos são os professores que lecionaram disciplinas cujo tópico era estatística (subjects.abbreviation='STAT');
+```{r}
+dbListFields(conn, "subjects")
+
+```
+```{r}
+dbListFields(conn, "subject_memberships")
+```
+```{r}
+
+dbListFields(conn, "course_offerings")
+```
+
+```{r}
+dbListFields(conn, "sections")
+```
+
+```{r}
+
+dbListFields(conn, "teachings")
+```
+```{r}
+
+dbListFields(conn, "instructors")
+```
+```{r}
+teachers <- dbGetQuery(conn, 
+                       'SELECT DISTINCT INSTRUCTORS.NAME FROM SUBJECTS
+                       INNER JOIN SUBJECT_MEMBERSHIPS
+                        ON SUBJECTS.CODE = SUBJECT_MEMBERSHIPS.SUBJECT_CODE
+                       INNER JOIN COURSE_OFFERINGS
+                        ON SUBJECT_MEMBERSHIPS.COURSE_OFFERING_UUID = COURSE_OFFERINGS.UUID
+                       INNER JOIN SECTIONS
+                        ON COURSE_OFFERINGS.UUID = SECTIONS.COURSE_OFFERING_UUID
+                       INNER JOIN TEACHINGS
+                        ON SECTIONS.UUID = TEACHINGS.SECTION_UUID
+                       INNER JOIN INSTRUCTORS
+                        ON TEACHINGS.INSTRUCTOR_ID = INSTRUCTORS.ID
+                       WHERE SUBJECTS.ABBREVIATION = "STAT"')
+teachers
+```
+
+
+O GPA americano é definido numa escala de 0 a 4, em que A = 4, AB = 3.5, B = 3, BC = 2.5, C = 2, D = 1 e F = 0. Determinando a nota média de cada oferecimento pela ponderação da quantidade de alunos em cada extrato com os valores numéricos de cada conceito, indique (no que se referente a disciplinas no assunto de estatística):
+
+
+
+```{r}
+dbListFields(conn, "grade_distributions")
+```
+
+```{r}
+dbListFields(conn, "courses")
+```
+
+```{r}
+gpa_stat <- dbGetQuery(
+  conn,
+  '
+  SELECT
+    course_offerings.uuid AS course_offering_uuid,
+    course_offerings.name,
+    course_offerings.course_uuid,
+    gpa.GPA
+
+  FROM course_offerings
+
+  INNER JOIN subject_memberships
+    ON course_offerings.uuid =
+       subject_memberships.course_offering_uuid
+
+  INNER JOIN subjects
+    ON subject_memberships.subject_code =
+       subjects.code
+
+  INNER JOIN
+  (
+    SELECT
+      course_offering_uuid,
+
+      (
+        4 * SUM(a_count) +
+        3.5 * SUM(ab_count) +
+        3 * SUM(b_count) +
+        2.5 * SUM(bc_count) +
+        2 * SUM(c_count) +
+        1 * SUM(d_count)
+      )
+      /
+      (
+        SUM(a_count) +
+        SUM(ab_count) +
+        SUM(b_count) +
+        SUM(bc_count) +
+        SUM(c_count) +
+        SUM(d_count) +
+        SUM(f_count)
+      ) AS GPA
+
+    FROM grade_distributions
+
+    GROUP BY course_offering_uuid
+  ) AS gpa
+
+    ON course_offerings.uuid = gpa.course_offering_uuid
+
+  WHERE subjects.abbreviation = "STAT"
+  '
+)
+
+head(gpa_stat)
+nrow(gpa_stat)
+summary(gpa_stat$GPA)
+```
+```{r}
+professor_gpa <- dbGetQuery(
+  conn,
+  '
+  SELECT
+    instructor_offerings.instructor_id,
+    instructors.name,
+    AVG(instructor_offerings.GPA) AS mean_GPA
+
+  FROM
+  (
+    SELECT DISTINCT
+      teachings.instructor_id,
+      gpa_stat.course_offering_uuid,
+      gpa_stat.GPA
+
+    FROM
+    (
+      SELECT
+        course_offering_uuid,
+
+        (
+          4 * SUM(a_count) +
+          3.5 * SUM(ab_count) +
+          3 * SUM(b_count) +
+          2.5 * SUM(bc_count) +
+          2 * SUM(c_count) +
+          1 * SUM(d_count)
+        )
+        /
+        (
+          SUM(a_count) +
+          SUM(ab_count) +
+          SUM(b_count) +
+          SUM(bc_count) +
+          SUM(c_count) +
+          SUM(d_count) +
+          SUM(f_count)
+        ) AS GPA
+
+      FROM grade_distributions
+
+      GROUP BY course_offering_uuid
+    ) AS gpa_stat
+
+    INNER JOIN sections
+      ON gpa_stat.course_offering_uuid =
+         sections.course_offering_uuid
+
+    INNER JOIN teachings
+      ON sections.uuid = teachings.section_uuid
+
+    INNER JOIN subject_memberships
+      ON gpa_stat.course_offering_uuid =
+         subject_memberships.course_offering_uuid
+
+    INNER JOIN subjects
+      ON subject_memberships.subject_code = subjects.code
+
+    WHERE subjects.abbreviation = "STAT"
+  ) AS instructor_offerings
+
+  INNER JOIN instructors
+    ON instructor_offerings.instructor_id = instructors.id
+
+  GROUP BY
+    instructor_offerings.instructor_id,
+    instructors.name
+
+  HAVING mean_GPA IS NOT NULL
+
+  ORDER BY mean_GPA
+  '
+)
+```
+
+a.  Quem é o professor mais difícil? (menor GPA medio)
+```{r}
+
+head(professor_gpa)
+
+```
+Respostas: o professor mais difícil é James D Kuelbs com GPA medio de 2.607692.
+
+
+b.  Quem é o professor mais fácil?
+
+
+```{r}
+tail(professor_gpa)
+```
+Resposta:O professores mais fáceis são Srikanthmadhavan Aravamuthan, Guanhua Chen e Tajuan Si, os três com GPA médio de 4.0.
+
+
+
+
+```{r}
+course_gpa <- dbGetQuery(
+  conn,
+  '
+  SELECT
+    courses.uuid,
+    courses.name,
+    courses.number,
+    AVG(gpa_stat.GPA) AS mean_GPA
+
+  FROM
+  (
+    SELECT
+      course_offering_uuid,
+
+      (
+        4 * SUM(a_count) +
+        3.5 * SUM(ab_count) +
+        3 * SUM(b_count) +
+        2.5 * SUM(bc_count) +
+        2 * SUM(c_count) +
+        1 * SUM(d_count)
+      )
+      /
+      (
+        SUM(a_count) +
+        SUM(ab_count) +
+        SUM(b_count) +
+        SUM(bc_count) +
+        SUM(c_count) +
+        SUM(d_count) +
+        SUM(f_count)
+      ) AS GPA
+
+    FROM grade_distributions
+
+    GROUP BY course_offering_uuid
+  ) AS gpa_stat
+
+  INNER JOIN course_offerings
+    ON gpa_stat.course_offering_uuid =
+       course_offerings.uuid
+
+  INNER JOIN courses
+    ON course_offerings.course_uuid =
+       courses.uuid
+
+  INNER JOIN subject_memberships
+    ON course_offerings.uuid =
+       subject_memberships.course_offering_uuid
+
+  INNER JOIN subjects
+    ON subject_memberships.subject_code =
+       subjects.code
+
+  WHERE subjects.abbreviation = "STAT"
+
+  GROUP BY courses.uuid, courses.name, courses.number
+
+  HAVING mean_GPA IS NOT NULL
+
+  ORDER BY mean_GPA
+  '
+)
+
+```
+
+c.  Qual é a disciplina mais difícil? (menor GPA)
+```{r}
+
+names(course_gpa)
+head(course_gpa)
+```
+Resposta: A disciplina mais difíciel é Introduction to the Theory of Probability com GPA médio de 2.87807
+
+d.  Qual é a disciplina mais fácil?
+```{r}
+tail(course_gpa)
+```
+
+Resposta: E as disciplinas mais fáceis são Nonparametric Statistics and Machine Learning Methods,Sample Survey Theory and Method, Data Science Practicum. Empir Proc&Semiparmtrc Infernc com GAP médio de 4.0
+Desconecte do banco de dados.
+
+
+```{r}
+dbDisconnect(conn)
+```
+
+```{r}
+Sys.setenv(TZ = "America/Sao_Paulo")
+
+paste(
+  "Arquivo compilado em:",
+  format(Sys.time(), "%d/%m/%Y às %H:%M:%S")
+)
+```
