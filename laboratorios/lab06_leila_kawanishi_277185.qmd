@@ -31,30 +31,117 @@ Baixe o arquivo disco.db e armazene na variável path o caminho completo (pasta)
 ```{r}
 path <- 'C:/Users/USER/Documents/ME315B_banco_de_dados_2sem_2026'
 
-fname <- 
+fname <- file.path(path, 'disco.db')
+
 ```
 
 Utilizando o pacote RSQLite, conecte-se ao arquivo de banco de dados. Armazene a conexão na variável conn.
+```{r}
+library(RSQLite)
+conn <- dbConnect(SQLite(), fname)
+
+```
+
 
 Liste as tabelas existentes no banco de dados.
+```{r}
+dbListTables(conn)
+```
+
 
 Identifique os nomes de todas as colunas existentes na tabela customers.
+```{r}
+dbListFields(conn, 'customer')
+```
+
 
 Utilizando apenas SQLite, com o apoio do comando dbGetQuery, identifique quantos clientes estão atualmente cadastrados neste banco de dados.
 
+```{r}
+nCostomer = dbGetQuery(conn, 'SELECT CUSTOMERID FROM CUSTOMER')
+dim(nCostomer)
+
+```
+```{r}
+nDistinctCostomer = dbGetQuery(conn, 'SELECT COUNT( DISTINCT CUSTOMERID)FROM CUSTOMER')
+nDistinctCostomer
+```
+
+
 Utilizando apenas SQLite, identifique o número de países diferentes em que moram os clientes encontrados acima.
+```{r}
+nDistinctCountries <- dbGetQuery(conn, 'SELECT COUNT(DISTINCT COUNTRY) FROM CUSTOMER')
+nDistinctCountries
+```
+
 
 Utilizando apenas SQLite, quantos clientes existem por país? A tabela resultante deve conter o nome do país e a respectiva contagem, além de ser ordenada de maneira decrescente pela referida contagem.
+```{r}
+CustomerCountry <- dbGetQuery(conn, 'SELECT COUNTRY, COUNT(CUSTOMERID) AS CUSTOMERCOUNT FROM CUSTOMER GROUP BY COUNTRY ORDER BY CUSTOMERCOUNT DESC')
+CustomerCountry
+```
+
 
 Quais são os 5 países com mais clientes registrados? Use apenas SQLite.
+```{r}
+top5Countries <- dbGetQuery(conn,  'SELECT Country, COUNT(CustomerId) AS CustomerCount FROM Customer
+                                     GROUP BY Country
+                                     ORDER BY CustomerCount DESC
+                                     LIMIT 5'
+)
+
+top5Countries
+
+```
+
 
 Quais são os países registrados que possuem apenas 6 letras no nome?
+```{r}
+Countries6Letters <- dbGetQuery(conn,'SELECT DISTINCT Country FROM Customer
+                                     WHERE LENGTH(COUNTRY) = 6'
+)
+Countries6Letters
+```
+
 
 Quais foram as músicas compradas por clientes brasileiros?
+```{r}
+dbListFields(conn, 'track')
+```
+
+
+```{r}
+
+dbListFields(conn, 'customer')
+```
+```{r}
+dbListFields(conn, 'invoice')
+```
+
+```{r}
+dbListFields(conn, 'invoiceline')
+```
+
+```{r}
+
+MusicBrazilianCustomer <- dbGetQuery(conn, 'SELECT DISTINCT TRACK.NAME FROM TRACK
+                                            INNER JOIN INVOICELINE
+                                              ON TRACK.TRACKID = INVOICELINE.TRACKID
+                                            INNER JOIN INVOICE
+                                              ON INVOICE.INVOICEID = INVOICELINE.INVOICEID
+                                            INNER JOIN CUSTOMER
+                                              ON INVOICE.CUSTOMERID = CUSTOMER.CUSTOMERID
+                                     WHERE CUSTOMER.COUNTRY = "Brazil"')
+MusicBrazilianCustomer
+```
+
 
 Desconecte do banco de dados.
-
+```{r}
 dbDisconnect(conn)
+```
+
+
 
 ```{r}
 Sys.setenv(TZ = "America/Sao_Paulo")
