@@ -28,6 +28,12 @@ O livro R for Data Science possui um excelente capítulo sobre strings.
 ##  Atividade
 Baixe o arquivo disco.db e armazene na variável path o caminho completo (pasta) na qual o arquivo foi gravado. Utilize o comando file.path() para combinar a variável path com o nome do arquivo (disco.db) e obter o nome do arquivo com seu respectivo caminho. Armazene este resultado na variável fname.
 
+```{r}
+path <- 'C:/Users/USER/Documents/ME315B_banco_de_dados_2sem_2026'
+
+fname <- 
+```
+
 Utilizando o pacote RSQLite, conecte-se ao arquivo de banco de dados. Armazene a conexão na variável conn.
 
 Liste as tabelas existentes no banco de dados.
@@ -50,3 +56,11 @@ Desconecte do banco de dados.
 
 dbDisconnect(conn)
 
+```{r}
+Sys.setenv(TZ = "America/Sao_Paulo")
+
+paste(
+  "Arquivo compilado em:",
+  format(Sys.time(), "%d/%m/%Y às %H:%M:%S")
+)
+```
