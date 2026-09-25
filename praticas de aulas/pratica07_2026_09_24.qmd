@@ -1,0 +1,41 @@
+---
+title: "pratica07_2026_09_24"
+author: "Leila Kawanishi"
+format: pdf
+editor: visual
+---
+
+## GROUP BY II
+
+# Instruções
+
+- No arquivo purchase.sqlite encontram-se as tabelas PURCHASE criada especialmente para esta aula.
+- Configure o Rstudio (Posit Cloud) para trabalhar com SQLIte e importa o banco de dados purchase.sqlite
+
+```{r}
+library(DBI)
+library(RSQLite)
+knitr::opts_chunk$set(max.print = Inf)
+
+con <- dbConnect(RSQLite::SQLite(), "../purchase.sqlite")
+
+```
+
+
+```{sql connection=con}
+SELECT * FROM PURCHASE
+
+```
+
+Cada linha da tabela PURCHASE contém informações sobre a compra de uma peça de um fornecedor, realizada por um funcionário, para uso em um projeto
+
+- Cada peça é identificada por um número da peça (PNO);
+- Cada fornecedor é identificado por um número do fornecedor (SNO);
+- Cada funcionário é identificado por um número do funcionário (ENO);
+- Cada projeto é identificado por um número do projeto (PJNO).
+
+Essas quatro colunas contêm dados do tipo cadeia de caracteres (string). As próximas três colunas contêm valores inteiros. São elas:
+
+- PURDAY: Data da compra. Aqui, 1 representa o primeiro dia do ano corrente, 2 representa o segundo dia do ano corrente, e assim por diante.
+- COST: Custo da peça, em dólares.
+- DISCOUNT: Valor do desconto, que pode variar de zero até o valor total de COST da peça.
