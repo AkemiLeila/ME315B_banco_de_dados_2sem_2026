@@ -5,6 +5,7 @@ format: pdf
 editor: visual
 ---
 
+
 ## GROUP BY
 
 # Intruções
@@ -33,8 +34,9 @@ SELECT * FROM EMPLOYEE
 ```
 
 # SINTAXE
-
+```sql
 SELECT grouping_column, funcao_de_agregacao FROM Tabela WHERE condicao GROUP BY grouping_column
+```
 
 - WHERE sempre é antes do GROUP BY
 
@@ -95,8 +97,11 @@ HAVING TOTAL > 15_000
 # HAVING
 
 Sintaxe:
+```sql
 
 HAVING condicao
+```
+
 
 - A clausula HAVING deve estar logo depois do GROUP BY
 - A condição deve referenciar a um resultado intermediario produzido pela clausula GROUO BY

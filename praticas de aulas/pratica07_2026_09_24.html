@@ -1,0 +1,2260 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Leila Kawanishi">
+
+<title>pratica07_2026_09_24</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="pratica07_2026_09_24_files/libs/clipboard/clipboard.min.js"></script>
+<script src="pratica07_2026_09_24_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="pratica07_2026_09_24_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="pratica07_2026_09_24_files/libs/quarto-html/popper.min.js"></script>
+<script src="pratica07_2026_09_24_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="pratica07_2026_09_24_files/libs/quarto-html/anchor.min.js"></script>
+<link href="pratica07_2026_09_24_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="pratica07_2026_09_24_files/libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="pratica07_2026_09_24_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="pratica07_2026_09_24_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="pratica07_2026_09_24_files/libs/bootstrap/bootstrap-efbb37e9afcc02144ebbc7afd12a776f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="pratica07_2026_09_24_files/libs/quarto-diagram/mermaid.min.js"></script>
+<script src="pratica07_2026_09_24_files/libs/quarto-diagram/mermaid-init.js"></script>
+<link href="pratica07_2026_09_24_files/libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">pratica07_2026_09_24</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Leila Kawanishi </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="group-by-ii" class="level2">
+<h2 class="anchored" data-anchor-id="group-by-ii">GROUP BY II</h2>
+</section>
+<section id="instruções" class="level1">
+<h1>Instruções</h1>
+<ul>
+<li>No arquivo purchase.sqlite encontram-se as tabelas PURCHASE criada especialmente para esta aula.</li>
+<li>Configure o Rstudio (Posit Cloud) para trabalhar com SQLIte e importa o banco de dados purchase.sqlite</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DBI)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RSQLite)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">max.print =</span> <span class="cn">Inf</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(RSQLite<span class="sc">::</span><span class="fu">SQLite</span>(), <span class="st">"../purchase.sqlite"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> PURCHASE</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>46 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">PNO</th>
+<th style="text-align: left;">SNO</th>
+<th style="text-align: left;">ENO</th>
+<th style="text-align: left;">PJNO</th>
+<th style="text-align: right;">PURDAY</th>
+<th style="text-align: right;">COST</th>
+<th style="text-align: right;">DISCOUNT</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">P1</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P1</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">250</td>
+<td style="text-align: right;">50</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P1</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: right;">300</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P1</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">PJ3</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P1</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">PJ3</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P1</td>
+<td style="text-align: left;">S2</td>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">PJ3</td>
+<td style="text-align: right;">85</td>
+<td style="text-align: right;">300</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P2</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P2</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P2</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: right;">85</td>
+<td style="text-align: right;">1200</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P3</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">500</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P3</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">500</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P3</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: right;">70</td>
+<td style="text-align: right;">550</td>
+<td style="text-align: right;">200</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P4</td>
+<td style="text-align: left;">S2</td>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">300</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P4</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">300</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P4</td>
+<td style="text-align: left;">S2</td>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: right;">70</td>
+<td style="text-align: right;">400</td>
+<td style="text-align: right;">50</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P5</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">1200</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P5</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">1200</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P5</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1500</td>
+<td style="text-align: right;">25</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P6</td>
+<td style="text-align: left;">S2</td>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P6</td>
+<td style="text-align: left;">S2</td>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P7</td>
+<td style="text-align: left;">S3</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P7</td>
+<td style="text-align: left;">S4</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P7</td>
+<td style="text-align: left;">S3</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P7</td>
+<td style="text-align: left;">S4</td>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: right;">61</td>
+<td style="text-align: right;">1200</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P7</td>
+<td style="text-align: left;">S4</td>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">1200</td>
+<td style="text-align: right;">200</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P8</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: right;">61</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P8</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P8</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: right;">73</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P8</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">50</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P8</td>
+<td style="text-align: left;">S2</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">75</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P8</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P4</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">PJ3</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">300</td>
+<td style="text-align: right;">75</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P4</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">PJ3</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">300</td>
+<td style="text-align: right;">75</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P4</td>
+<td style="text-align: left;">S2</td>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">PJ3</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">300</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P3</td>
+<td style="text-align: left;">S3</td>
+<td style="text-align: left;">E3</td>
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">1200</td>
+<td style="text-align: right;">1100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P4</td>
+<td style="text-align: left;">S3</td>
+<td style="text-align: left;">E3</td>
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">1200</td>
+<td style="text-align: right;">900</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P5</td>
+<td style="text-align: left;">S3</td>
+<td style="text-align: left;">E3</td>
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">1500</td>
+<td style="text-align: right;">1400</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P3</td>
+<td style="text-align: left;">S3</td>
+<td style="text-align: left;">E3</td>
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">1200</td>
+<td style="text-align: right;">1000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P4</td>
+<td style="text-align: left;">S3</td>
+<td style="text-align: left;">E3</td>
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">1200</td>
+<td style="text-align: right;">1000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P5</td>
+<td style="text-align: left;">S3</td>
+<td style="text-align: left;">E3</td>
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">1500</td>
+<td style="text-align: right;">1300</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P3</td>
+<td style="text-align: left;">S4</td>
+<td style="text-align: left;">E4</td>
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">1100</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P4</td>
+<td style="text-align: left;">S4</td>
+<td style="text-align: left;">E4</td>
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">1200</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P5</td>
+<td style="text-align: left;">S4</td>
+<td style="text-align: left;">E4</td>
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">1500</td>
+<td style="text-align: right;">50</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P3</td>
+<td style="text-align: left;">S4</td>
+<td style="text-align: left;">E4</td>
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">1100</td>
+<td style="text-align: right;">50</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">P4</td>
+<td style="text-align: left;">S4</td>
+<td style="text-align: left;">E4</td>
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: right;">70</td>
+<td style="text-align: right;">1200</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">P6</td>
+<td style="text-align: left;">S4</td>
+<td style="text-align: left;">E4</td>
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: right;">71</td>
+<td style="text-align: right;">1500</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Cada linha da tabela PURCHASE contém informações sobre a compra de uma peça de um fornecedor, realizada por um funcionário, para uso em um projeto</p>
+<ul>
+<li>Cada peça é identificada por um número da peça (PNO);</li>
+<li>Cada fornecedor é identificado por um número do fornecedor (SNO);</li>
+<li>Cada funcionário é identificado por um número do funcionário (ENO);</li>
+<li>Cada projeto é identificado por um número do projeto (PJNO).</li>
+</ul>
+<p>Essas quatro colunas contêm dados do tipo cadeia de caracteres (string). As próximas três colunas contêm valores inteiros. São elas:</p>
+<ul>
+<li>PURDAY: Data da compra. Aqui, 1 representa o primeiro dia do ano corrente, 2 representa o segundo dia do ano corrente, e assim por diante.</li>
+<li>COST: Custo da peça, em dólares.</li>
+<li>DISCOUNT: Valor do desconto, que pode variar de zero até o valor total de COST da peça.</li>
+</ul>
+<section id="group-by" class="level2">
+<h2 class="anchored" data-anchor-id="group-by">GROUP BY</h2>
+<ol type="1">
+<li>Consulte a tabela PURCHASE. Para cada projeto, exiba seu número de projeto (PJNO), seguido pelo custo total de todas as peças compradas para o projeto. Ordene o resultado pelos valores de PJNO.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> PJNO, <span class="fu">SUM</span>(<span class="kw">COST</span>) <span class="kw">FROM</span> PURCHASE</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> PJNO</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> PJNO</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>3 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">PJNO</th>
+<th style="text-align: right;">SUM(COST)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: right;">16900</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: right;">15200</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PJ3</td>
+<td style="text-align: right;">1600</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ol start="2" type="1">
+<li>Consulte a tabela PURCHASE. Para cada fornecedor, exiba seu número de fornecedor (SNO), seguido pelo custo total de todas as peças compradas do fornecedor.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> SNO, <span class="fu">SUM</span>(<span class="kw">COST</span>) <span class="kw">FROM</span> PURCHASE</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> SNO</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>4 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">SNO</th>
+<th style="text-align: right;">SUM(COST)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">S1</td>
+<td style="text-align: right;">11200</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S2</td>
+<td style="text-align: right;">1700</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S3</td>
+<td style="text-align: right;">9800</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S4</td>
+<td style="text-align: right;">11000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ol start="3" type="1">
+<li>Consulte a tabela PURCHASE. Para cada projeto que utilizou peças fornecidas por algum fornecedor, exiba o número do projeto (PJNO), seguido pelo número do fornecedor (SNO) e pelo custo total das peças do projeto compradas desse fornecedor. Ordene o resultado por SNO dentro de cada PJNO.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> PJNO, SNO, <span class="fu">SUM</span>(<span class="kw">COST</span>) <span class="kw">AS</span> CUSTO_TOTAL <span class="kw">FROM</span> PURCHASE</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> PJNO, SNO</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> PJNO, SNO</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>9 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">PJNO</th>
+<th style="text-align: left;">SNO</th>
+<th style="text-align: right;">CUSTO_TOTAL</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: right;">6500</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: left;">S3</td>
+<td style="text-align: right;">5900</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: left;">S4</td>
+<td style="text-align: right;">4500</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: right;">3700</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: left;">S2</td>
+<td style="text-align: right;">1100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: left;">S3</td>
+<td style="text-align: right;">3900</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: left;">S4</td>
+<td style="text-align: right;">6500</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PJ3</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: right;">1000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PJ3</td>
+<td style="text-align: left;">S2</td>
+<td style="text-align: right;">600</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ol start="4" type="1">
+<li>Para cada fornecedor que vendeu pelo menos uma peça para ser utilizada em algum projeto, exiba o valor SNO do fornecedor, seguido pelo valor PJNO do projeto e pelo custo total das peças que o fornecedor forneceu para o projeto. Ordene o resultado por PJNO dentro de cada SNO.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> SNO, PJNO, <span class="fu">SUM</span>(<span class="kw">COST</span>) <span class="kw">AS</span> CUSTO <span class="kw">FROM</span> PURCHASE</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> SNO, PJNO</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> SNO, PJNO</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>9 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">SNO</th>
+<th style="text-align: left;">PJNO</th>
+<th style="text-align: right;">CUSTO</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: right;">6500</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: right;">3700</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">PJ3</td>
+<td style="text-align: right;">1000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S2</td>
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: right;">1100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S2</td>
+<td style="text-align: left;">PJ3</td>
+<td style="text-align: right;">600</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S3</td>
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: right;">5900</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S3</td>
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: right;">3900</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S4</td>
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: right;">4500</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S4</td>
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: right;">6500</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>5.Consulte a tabela PURCHASE. Para cada funcionário que comprou peças de um fornecedor, exiba o valor ENO do funcionário, seguido pelo valor SNO do fornecedor e, em seguida, pelo custo total das peças que o funcionário comprou desse fornecedor.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> ENO, SNO, <span class="fu">SUM</span>(<span class="kw">COST</span>) <span class="kw">AS</span> CUSTO <span class="kw">FROM</span> PURCHASE</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> ENO, SNO</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>9 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">ENO</th>
+<th style="text-align: left;">SNO</th>
+<th style="text-align: right;">CUSTO</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: right;">8600</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S2</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S3</td>
+<td style="text-align: right;">2000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S4</td>
+<td style="text-align: right;">1000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: right;">2600</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S2</td>
+<td style="text-align: right;">1600</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S4</td>
+<td style="text-align: right;">2400</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">E3</td>
+<td style="text-align: left;">S3</td>
+<td style="text-align: right;">7800</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">E4</td>
+<td style="text-align: left;">S4</td>
+<td style="text-align: right;">7600</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ol start="6" type="1">
+<li>Consulte a tabela PURCHASE. Para cada projeto em que um funcionário comprou uma peça de um fornecedor para ser utilizada no projeto, exiba os respectivos valores PJNO, ENO e SNO, seguidos pelo custo total das peças compradas pelo funcionário do fornecedor para o projeto. Ordene o resultado por SNO dentro de ENO, dentro de PJNO.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> PJNO, ENO, SNO, <span class="fu">SUM</span>(<span class="kw">COST</span>) <span class="kw">AS</span> CUSTO <span class="kw">FROM</span> PURCHASE</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> PJNO, ENO, SNO</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> PJNO, ENO, SNO</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>14 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">PJNO</th>
+<th style="text-align: left;">ENO</th>
+<th style="text-align: left;">SNO</th>
+<th style="text-align: right;">CUSTO</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: right;">6500</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S3</td>
+<td style="text-align: right;">2000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S4</td>
+<td style="text-align: right;">1000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: left;">E3</td>
+<td style="text-align: left;">S3</td>
+<td style="text-align: right;">3900</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: left;">E4</td>
+<td style="text-align: left;">S4</td>
+<td style="text-align: right;">3500</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: right;">1100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S2</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: right;">2600</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S2</td>
+<td style="text-align: right;">1000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S4</td>
+<td style="text-align: right;">2400</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: left;">E3</td>
+<td style="text-align: left;">S3</td>
+<td style="text-align: right;">3900</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: left;">E4</td>
+<td style="text-align: left;">S4</td>
+<td style="text-align: right;">4100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PJ3</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: right;">1000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PJ3</td>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S2</td>
+<td style="text-align: right;">600</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ol start="7" type="1">
+<li>Consulte a tabela PURCHASE. Para cada projeto em que um funcionário comprou uma peça de um fornecedor para ser utilizada no projeto, exiba os respectivos valores PJNO, ENO, SNO e PNO, seguidos pelo custo total de cada peça comprada pelo funcionário do fornecedor para o projeto. Ordene o resultado por PNO dentro de SNO, dentro de ENO, dentro de PJNO.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> PJNO, ENO, SNO, PNO, <span class="fu">SUM</span>(<span class="kw">COST</span>) <span class="kw">AS</span> CUSTO <span class="kw">FROM</span> PURCHASE</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> PJNO, SNO, ENO, PNO</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> PJNO, ENO, SNO, PNO</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>30 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">PJNO</th>
+<th style="text-align: left;">ENO</th>
+<th style="text-align: left;">SNO</th>
+<th style="text-align: left;">PNO</th>
+<th style="text-align: right;">CUSTO</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">P1</td>
+<td style="text-align: right;">750</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">P3</td>
+<td style="text-align: right;">1550</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">P5</td>
+<td style="text-align: right;">3900</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">P8</td>
+<td style="text-align: right;">300</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S3</td>
+<td style="text-align: left;">P7</td>
+<td style="text-align: right;">2000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S4</td>
+<td style="text-align: left;">P7</td>
+<td style="text-align: right;">1000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: left;">E3</td>
+<td style="text-align: left;">S3</td>
+<td style="text-align: left;">P3</td>
+<td style="text-align: right;">1200</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: left;">E3</td>
+<td style="text-align: left;">S3</td>
+<td style="text-align: left;">P4</td>
+<td style="text-align: right;">1200</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: left;">E3</td>
+<td style="text-align: left;">S3</td>
+<td style="text-align: left;">P5</td>
+<td style="text-align: right;">1500</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: left;">E4</td>
+<td style="text-align: left;">S4</td>
+<td style="text-align: left;">P3</td>
+<td style="text-align: right;">1100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PJ1</td>
+<td style="text-align: left;">E4</td>
+<td style="text-align: left;">S4</td>
+<td style="text-align: left;">P4</td>
+<td style="text-align: right;">2400</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">P2</td>
+<td style="text-align: right;">1000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">P8</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S2</td>
+<td style="text-align: left;">P8</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">P2</td>
+<td style="text-align: right;">2200</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">P4</td>
+<td style="text-align: right;">300</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">P8</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S2</td>
+<td style="text-align: left;">P4</td>
+<td style="text-align: right;">700</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S2</td>
+<td style="text-align: left;">P6</td>
+<td style="text-align: right;">300</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S4</td>
+<td style="text-align: left;">P7</td>
+<td style="text-align: right;">2400</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: left;">E3</td>
+<td style="text-align: left;">S3</td>
+<td style="text-align: left;">P3</td>
+<td style="text-align: right;">1200</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: left;">E3</td>
+<td style="text-align: left;">S3</td>
+<td style="text-align: left;">P4</td>
+<td style="text-align: right;">1200</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: left;">E3</td>
+<td style="text-align: left;">S3</td>
+<td style="text-align: left;">P5</td>
+<td style="text-align: right;">1500</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: left;">E4</td>
+<td style="text-align: left;">S4</td>
+<td style="text-align: left;">P3</td>
+<td style="text-align: right;">1100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: left;">E4</td>
+<td style="text-align: left;">S4</td>
+<td style="text-align: left;">P5</td>
+<td style="text-align: right;">1500</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PJ2</td>
+<td style="text-align: left;">E4</td>
+<td style="text-align: left;">S4</td>
+<td style="text-align: left;">P6</td>
+<td style="text-align: right;">1500</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PJ3</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">P1</td>
+<td style="text-align: right;">400</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PJ3</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">P4</td>
+<td style="text-align: right;">600</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PJ3</td>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S2</td>
+<td style="text-align: left;">P1</td>
+<td style="text-align: right;">300</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PJ3</td>
+<td style="text-align: left;">E2</td>
+<td style="text-align: left;">S2</td>
+<td style="text-align: left;">P4</td>
+<td style="text-align: right;">300</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="sintaxe" class="level2">
+<h2 class="anchored" data-anchor-id="sintaxe">SINTAXE</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> COL1, COL2, COL3, AGG<span class="op">-</span>FUN1, AGG<span class="op">-</span>FUN2</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> _______</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> ________</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> COL1, COL2, COL3</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span> __________</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> COL1, COL2, COL3</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ol start="8" type="1">
+<li>Consulte a tabela PURCHASE. Considere apenas as compras realizadas pelo funcionário E1. Para cada fornecedor do qual o funcionário E1 comprou uma peça, exiba os respectivos valores ENO e SNO, seguidos pelo custo total, custo máximo e custo mínimo das compras realizadas pelo funcionário E1 de cada fornecedor.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> SNO, ENO, <span class="fu">SUM</span>(<span class="kw">COST</span>) <span class="kw">AS</span> CUSTO, <span class="fu">MAX</span>(<span class="kw">COST</span>) <span class="kw">AS</span> MAXIMO, <span class="fu">MIN</span>(<span class="kw">COST</span>) <span class="kw">AS</span> MINIMO <span class="kw">FROM</span> PURCHASE</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> ENO <span class="op">=</span> <span class="st">'E1'</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> ENO, SNO</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>4 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">SNO</th>
+<th style="text-align: left;">ENO</th>
+<th style="text-align: right;">CUSTO</th>
+<th style="text-align: right;">MAXIMO</th>
+<th style="text-align: right;">MINIMO</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: right;">8600</td>
+<td style="text-align: right;">1500</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S2</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S3</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: right;">2000</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">1000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S4</td>
+<td style="text-align: left;">E1</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">1000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ol start="9" type="1">
+<li>stamos interessados em saber se algum fornecedor vendeu a mesma peça por preços diferentes (ou seja, se todas as compras que apresentam a mesma combinação de valores (SNO, PNO) possuem o mesmo valor de COST). Para qualquer fornecedor que tenha cobrado preços diferentes pela mesma peça, exiba as seguintes informações:</li>
+</ol>
+<ul>
+<li>Os respectivos valores de SNO e PNO;</li>
+<li>O COST mínimo (MINCOST) para cada par de valores (SNO, PNO);</li>
+<li>O COST máximo (MAXCOST) para cada par de valores (SNO, PNO);</li>
+<li>A diferença (COSTDIFF) entre os custos máximo e mínimo;</li>
+<li>Exiba apenas as linhas em que os custos máximo e mínimo sejam diferentes;</li>
+<li>Exiba as informações na seguinte sequência de colunas: SNO, PNO, MAXCOST, MINCOST, COSTDIFF;</li>
+<li>Ordene o resultado em ordem decrescente por COSTDIFF. Em caso de valores de COSTDIFF iguais, ordene por PNO (crescente) dentro de SNO (crescente).</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> SNO, PNO, <span class="fu">MAX</span>(<span class="kw">COST</span>) <span class="kw">AS</span> MAXCOST, <span class="fu">MIN</span>(<span class="kw">COST</span>) <span class="kw">AS</span> MINCOST, <span class="fu">MAX</span>(<span class="kw">COST</span>) <span class="op">-</span> <span class="fu">MIN</span>(<span class="kw">COST</span>) <span class="kw">AS</span> COSTDIFF</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> PURCHASE</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> SNO, PNO</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span> COSTDIFF <span class="op">&lt;&gt;</span> <span class="dv">0</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> COSTDIFF <span class="kw">DESC</span>, SNO, PNO</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>7 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">SNO</th>
+<th style="text-align: left;">PNO</th>
+<th style="text-align: right;">MAXCOST</th>
+<th style="text-align: right;">MINCOST</th>
+<th style="text-align: right;">COSTDIFF</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">P5</td>
+<td style="text-align: right;">1500</td>
+<td style="text-align: right;">1200</td>
+<td style="text-align: right;">300</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">P2</td>
+<td style="text-align: right;">1200</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">200</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S4</td>
+<td style="text-align: left;">P7</td>
+<td style="text-align: right;">1200</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">200</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">P1</td>
+<td style="text-align: right;">300</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S2</td>
+<td style="text-align: left;">P4</td>
+<td style="text-align: right;">400</td>
+<td style="text-align: right;">300</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S2</td>
+<td style="text-align: left;">P6</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S1</td>
+<td style="text-align: left;">P3</td>
+<td style="text-align: right;">550</td>
+<td style="text-align: right;">500</td>
+<td style="text-align: right;">50</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="funções-individuais" class="level2">
+<h2 class="anchored" data-anchor-id="funções-individuais">Funções individuais</h2>
+<p>Definição Uma função individual opera sobre um valor de uma única linha e retorna um único valor para essa mesma linha.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ROUND</span>(N, M) — Arredonda N para M casas decimais.</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">TRUNC</span>(N, M) — Trunca N para M casas decimais. [SQLite: não funciona (mas pode tentar com <span class="fu">CAST</span>())]</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ABS</span>(N) — Retorna o valor absoluto de N.</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">SIGN</span>(N) — Retorna <span class="dv">1</span> se N <span class="op">&gt;</span> <span class="dv">0</span>, <span class="dv">0</span> se N <span class="op">=</span> <span class="dv">0</span> e <span class="op">-</span><span class="dv">1</span> se N <span class="op">&lt;</span> <span class="fl">0.</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">MOD</span>(N, M) — Retorna o resto da divisão de N por M. [SQLite: %]</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">POWER</span>(N, M) — Retorna N elevado à potência M.</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="fu">SQRT</span>(N) — Retorna a raiz quadrada de N.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+</section>
+<section id="funções-sql" class="level1">
+<h1>Funções SQL</h1>
+<p>Aqui estão as principais funções:</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+    A["SQL"] --&gt; B["COMO OPERA?"]
+    A --&gt; C["O QUE CALCULA?"]
+
+    B --&gt; D["SINGLE-ROW&lt;br/&gt;(individual)"]
+    B --&gt; E["AGGREGATE&lt;br/&gt;(agregação)"]
+
+    D --&gt; F["Uma linha"]
+    E --&gt; G["Várias linhas"]
+
+    F --&gt; H["SQRT()&lt;br/&gt;ROUND()&lt;br/&gt;ABS()&lt;br/&gt;LENGTH()"]
+    G --&gt; I["AVG()&lt;br/&gt;SUM()&lt;br/&gt;MAX()&lt;br/&gt;COUNT()"]
+
+    C --&gt; J["ARITMÉTICA"]
+    J --&gt; K["Adição: +&lt;br/&gt;Subtração: -&lt;br/&gt;Multiplicação: *&lt;br/&gt;Divisão: /"]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(con)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">max.print =</span> <span class="cn">Inf</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Conecta/Cria o arquivo</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(RSQLite<span class="sc">::</span><span class="fu">SQLite</span>(), <span class="st">"../demo2.sqlite"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> DEMO2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>5 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">I1</th>
+<th style="text-align: right;">D1</th>
+<th style="text-align: left;">V1</th>
+<th style="text-align: left;">F1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">-10</td>
+<td style="text-align: right;">-8.82</td>
+<td style="text-align: left;">Julie Martyn</td>
+<td style="text-align: left;">Hello</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-5</td>
+<td style="text-align: right;">-5.28</td>
+<td style="text-align: left;">JESSIE MARTYN</td>
+<td style="text-align: left;">GOOD</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: left;">Janet Martyn</td>
+<td style="text-align: left;">By</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">6.42</td>
+<td style="text-align: left;">Frank</td>
+<td style="text-align: left;">BYE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">9.98</td>
+<td style="text-align: left;">Wally</td>
+<td style="text-align: left;">HYY</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ol start="10" type="1">
+<li>Aplicar na coluna D1 da tabela DEMO2 todas as funções individuais listadas.</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> D1, </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ROUND</span>(D1, <span class="dv">1</span>) <span class="kw">AS</span> ROUND1,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">CAST</span>(D1 <span class="kw">AS</span> <span class="dt">INTEGER</span>) <span class="kw">AS</span> TRUNC0,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ABS</span>(D1) <span class="kw">AS</span> ABSVAL,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">SIGN</span>(D1) <span class="kw">AS</span> SINAL,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ROUND</span>(D1,<span class="dv">0</span>) % <span class="dv">2</span> <span class="kw">AS</span> RESTO,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">POWER</span>(D1, <span class="dv">2</span>) <span class="kw">AS</span> QUADRADO,</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">POWER</span>(D1, <span class="dv">3</span>) <span class="kw">AS</span> CUBO,</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="fu">SQRT</span>(<span class="fu">ABS</span>(D1)) <span class="kw">AS</span> RAIZ</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> DEMO2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>5 records</caption>
+<colgroup>
+<col style="width: 8%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 13%">
+<col style="width: 14%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">D1</th>
+<th style="text-align: right;">ROUND1</th>
+<th style="text-align: right;">TRUNC0</th>
+<th style="text-align: right;">ABSVAL</th>
+<th style="text-align: right;">SINAL</th>
+<th style="text-align: right;">RESTO</th>
+<th style="text-align: right;">QUADRADO</th>
+<th style="text-align: right;">CUBO</th>
+<th style="text-align: right;">RAIZ</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">-8.82</td>
+<td style="text-align: right;">-8.8</td>
+<td style="text-align: right;">-8</td>
+<td style="text-align: right;">8.82</td>
+<td style="text-align: right;">-1</td>
+<td style="text-align: right;">-1</td>
+<td style="text-align: right;">77.7924</td>
+<td style="text-align: right;">-686.1290</td>
+<td style="text-align: right;">2.969848</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-5.28</td>
+<td style="text-align: right;">-5.3</td>
+<td style="text-align: right;">-5</td>
+<td style="text-align: right;">5.28</td>
+<td style="text-align: right;">-1</td>
+<td style="text-align: right;">-1</td>
+<td style="text-align: right;">27.8784</td>
+<td style="text-align: right;">-147.1980</td>
+<td style="text-align: right;">2.297825</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6.42</td>
+<td style="text-align: right;">6.4</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">6.42</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">41.2164</td>
+<td style="text-align: right;">264.6093</td>
+<td style="text-align: right;">2.533772</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">9.98</td>
+<td style="text-align: right;">10.0</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">9.98</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">99.6004</td>
+<td style="text-align: right;">994.0120</td>
+<td style="text-align: right;">3.159114</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ol start="11" type="1">
+<li>Calcule a soma dos valores absolutos de D1,</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">SUM</span>(<span class="fu">ABS</span>(D1)) <span class="kw">FROM</span> DEMO2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>1 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">SUM(ABS(D1))</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">30.5</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ol start="12" type="1">
+<li>Também existem funções individuais que podemos aplicar a STRINGS. Veremos elas no exemplo a seguir:</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> V1, F1,</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">LENGTH</span>(V1), </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">UPPER</span>(F1), </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">LOWER</span>(V1), </span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="fu">LTRIM</span>(V1), </span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">RTRIM</span>(V1), </span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="fu">SUBSTR</span>(V1, <span class="dv">3</span>, <span class="dv">5</span>), </span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="fu">CONCAT</span>(V1, <span class="fu">UPPER</span>(F1))</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> DEMO2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>5 records</caption>
+<colgroup>
+<col style="width: 11%">
+<col style="width: 4%">
+<col style="width: 9%">
+<col style="width: 8%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 13%">
+<col style="width: 18%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">V1</th>
+<th style="text-align: left;">F1</th>
+<th style="text-align: right;">LENGTH(V1)</th>
+<th style="text-align: left;">UPPER(F1)</th>
+<th style="text-align: left;">LOWER(V1)</th>
+<th style="text-align: left;">LTRIM(V1)</th>
+<th style="text-align: left;">RTRIM(V1)</th>
+<th style="text-align: left;">SUBSTR(V1, 3, 5)</th>
+<th style="text-align: left;">CONCAT(V1, UPPER(F1))</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Julie Martyn</td>
+<td style="text-align: left;">Hello</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">HELLO</td>
+<td style="text-align: left;">julie martyn</td>
+<td style="text-align: left;">Julie Martyn</td>
+<td style="text-align: left;">Julie Martyn</td>
+<td style="text-align: left;">lie M</td>
+<td style="text-align: left;">Julie MartynHELLO</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">JESSIE MARTYN</td>
+<td style="text-align: left;">GOOD</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: left;">GOOD</td>
+<td style="text-align: left;">jessie martyn</td>
+<td style="text-align: left;">JESSIE MARTYN</td>
+<td style="text-align: left;">JESSIE MARTYN</td>
+<td style="text-align: left;">SSIE</td>
+<td style="text-align: left;">JESSIE MARTYNGOOD</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Janet Martyn</td>
+<td style="text-align: left;">By</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">BY</td>
+<td style="text-align: left;">janet martyn</td>
+<td style="text-align: left;">Janet Martyn</td>
+<td style="text-align: left;">Janet Martyn</td>
+<td style="text-align: left;">net M</td>
+<td style="text-align: left;">Janet MartynBY</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Frank</td>
+<td style="text-align: left;">BYE</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">BYE</td>
+<td style="text-align: left;">frank</td>
+<td style="text-align: left;">Frank</td>
+<td style="text-align: left;">Frank</td>
+<td style="text-align: left;">ank</td>
+<td style="text-align: left;">FrankBYE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Wally</td>
+<td style="text-align: left;">HYY</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">HYY</td>
+<td style="text-align: left;">wally</td>
+<td style="text-align: left;">Wally</td>
+<td style="text-align: left;">Wally</td>
+<td style="text-align: left;">lly</td>
+<td style="text-align: left;">WallyHYY</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<section id="funções-individuais-para-string" class="level2">
+<h2 class="anchored" data-anchor-id="funções-individuais-para-string">Funções individuais para STRING</h2>
+<p>Funções de string são usadas para <strong>examinar, limpar, padronizar ou modificar textos</strong>.</p>
+<section id="problemas-comuns-com-strings" class="level3">
+<h3 class="anchored" data-anchor-id="problemas-comuns-com-strings">Problemas comuns com strings</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Problema</th>
+<th>O que precisamos fazer?</th>
+<th>Função</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Não sabemos o tamanho do texto</td>
+<td>Contar os caracteres</td>
+<td><code>LENGTH(C)</code></td>
+</tr>
+<tr class="even">
+<td>Texto está em formatos diferentes</td>
+<td>Transformar em maiúsculas</td>
+<td><code>UPPER(C)</code></td>
+</tr>
+<tr class="odd">
+<td>Texto está em formatos diferentes</td>
+<td>Transformar em minúsculas</td>
+<td><code>LOWER(C)</code></td>
+</tr>
+<tr class="even">
+<td>Existem espaços antes do texto</td>
+<td>Remover espaços à esquerda</td>
+<td><code>LTRIM(C)</code></td>
+</tr>
+<tr class="odd">
+<td>Existem espaços depois do texto</td>
+<td>Remover espaços à direita</td>
+<td><code>RTRIM(C)</code></td>
+</tr>
+<tr class="even">
+<td>Precisamos apenas de uma parte do texto</td>
+<td>Extrair uma substring</td>
+<td><code>SUBSTR(C, I, L)</code></td>
+</tr>
+<tr class="odd">
+<td>Temos dois textos que precisam ser unidos</td>
+<td>Concatenar</td>
+<td><code>CONCAT(C1, C2)</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="exemplo" class="level3">
+<h3 class="anchored" data-anchor-id="exemplo">Exemplo</h3>
+<p>Considere:</p>
+<pre class="text"><code>V1 = "Julie Martyn"
+F1 = "Hello"</code></pre>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Função</th>
+<th>Resultado</th>
+<th>O que aconteceu?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>LENGTH(V1)</code></td>
+<td><code>12</code></td>
+<td>contou os caracteres</td>
+</tr>
+<tr class="even">
+<td><code>UPPER(F1)</code></td>
+<td><code>HELLO</code></td>
+<td>transformou em maiúsculas</td>
+</tr>
+<tr class="odd">
+<td><code>LOWER(V1)</code></td>
+<td><code>julie martyn</code></td>
+<td>transformou em minúsculas</td>
+</tr>
+<tr class="even">
+<td><code>LTRIM(V1)</code></td>
+<td><code>Julie Martyn</code></td>
+<td>removeu espaços à esquerda</td>
+</tr>
+<tr class="odd">
+<td><code>RTRIM(V1)</code></td>
+<td><code>Julie Martyn</code></td>
+<td>removeu espaços à direita</td>
+</tr>
+<tr class="even">
+<td><code>SUBSTR(V1, 3, 5)</code></td>
+<td><code>lie M</code></td>
+<td>extraiu parte do texto</td>
+</tr>
+<tr class="odd">
+<td><code>CONCAT(V1, F1)</code></td>
+<td><code>Julie MartynHello</code></td>
+<td>juntou os dois textos</td>
+</tr>
+</tbody>
+</table>
+<p>As funções individuais para strings operam sobre cada valor de uma coluna, uma linha por vez.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Função / operador</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>LENGTH(C)</code></td>
+<td>Retorna o comprimento de <code>C</code>.</td>
+</tr>
+<tr class="even">
+<td><code>UPPER(C)</code></td>
+<td>Retorna <code>C</code> em letras maiúsculas.</td>
+</tr>
+<tr class="odd">
+<td><code>LOWER(C)</code></td>
+<td>Retorna <code>C</code> em letras minúsculas.</td>
+</tr>
+<tr class="even">
+<td><code>LTRIM(C)</code></td>
+<td>Remove os espaços em branco à esquerda de <code>C</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>RTRIM(C)</code></td>
+<td>Remove os espaços em branco à direita de <code>C</code>.</td>
+</tr>
+<tr class="even">
+<td><code>SUBSTR(C, I, L)</code></td>
+<td>Retorna uma substring de <code>C</code>, começando no caractere <code>I</code>, com comprimento <code>L</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>CONCAT(C1, C2)</code></td>
+<td>Concatena os valores de <code>C1</code> e <code>C2</code>.</td>
+</tr>
+</tbody>
+</table>
+<ol start="13" type="1">
+<li>Qual a diferença entre TRIM() e REPLACE()?</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> V1, <span class="fu">TRIM</span>(V1), <span class="kw">REPLACE</span>(V1, <span class="st">' '</span>, <span class="st">''</span>) <span class="kw">FROM</span> DEMO2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>5 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">V1</th>
+<th style="text-align: left;">TRIM(V1)</th>
+<th style="text-align: left;">REPLACE(V1, ’ ‘,’’)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Julie Martyn</td>
+<td style="text-align: left;">Julie Martyn</td>
+<td style="text-align: left;">JulieMartyn</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">JESSIE MARTYN</td>
+<td style="text-align: left;">JESSIE MARTYN</td>
+<td style="text-align: left;">JESSIEMARTYN</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Janet Martyn</td>
+<td style="text-align: left;">Janet Martyn</td>
+<td style="text-align: left;">JanetMartyn</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Frank</td>
+<td style="text-align: left;">Frank</td>
+<td style="text-align: left;">Frank</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Wally</td>
+<td style="text-align: left;">Wally</td>
+<td style="text-align: left;">Wally</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -15,23 +15,25 @@ library(RSQLite)
 con <- dbConnect(RSQLite::SQLite(), "../datasets/me315.sqlite")
 ```
 
-
 ```{sql connection=con}
 -- Preserve database
 SELECT * FROM PRESERVE
 ```
+
 ```{sql connection=con}
 --Employee database
 SELECT * FROM EMPLOYEE
 ```
-##  Expressões Aritméticas
+
+## Expressões Aritméticas
 
 1.  Suponha que estejamos interessados em aterar taxas de entrada em reservas naturais localizadas no Arizona. Assim, quatro propostas de alteração foram definidas:
-- Aumentar a taxa em US$ 1,50;
-- Diminuir a taxa em US$ 1,00;
+
+- Aumentar a taxa em US\$ 1,50;
+- Diminuir a taxa em US\$ 1,00;
 - Dobrar a taxa atual;
-- Reduzir pela metade a taxa atual.
-Mostre uma tabela com as taxas atuais e as quatro propostas de alteração.
+- Reduzir pela metade a taxa atual. Mostre uma tabela com as taxas atuais e as quatro propostas de alteração.
+
 ```{sql connection=con}
 
 SELECT PNAME,
@@ -55,14 +57,14 @@ SELECT PNAME,
 FROM PRESERVE
 WHERE STATE = 'MT'
 ```
+
 Resposta: Sim, há diferença. Quando dividido po 2.0 o resultado considera os decimais da divisão.
 
-
-3.  Apresente os valores de PNAME e FEE das reservas naturais localizadas no Arizona. Apresente também o resultado de adicionar USD$ 1,50 a cada valor de FEE e o resultado de subtrair USD$ 1,00 de cada valor de FEE. Para cada uma das colunas calculadas, especifique um alias: AUMENTO para a coluna resultante da adição e DIMINUICAO para a coluna resultante da subtração.
+3.  Apresente os valores de PNAME e FEE das reservas naturais localizadas no Arizona. Apresente também o resultado de adicionar USD\$ 1,50 a cada valor de FEE e o resultado de subtrair USD\$ 1,00 de cada valor de FEE. Para cada uma das colunas calculadas, especifique um alias: AUMENTO para a coluna resultante da adição e DIMINUICAO para a coluna resultante da subtração.
 
 # Atenção
-Os aliases podem ser utilizados na cláusula ORDER BY, mas não na cláusula WHERE.
-Isso ocorre porque a cláusula WHERE é processada antes da definição dos aliases, enquanto a cláusula ORDER BY é processada depois.
+
+Os aliases podem ser utilizados na cláusula ORDER BY, mas não na cláusula WHERE. Isso ocorre porque a cláusula WHERE é processada antes da definição dos aliases, enquanto a cláusula ORDER BY é processada depois.
 
 ```{sql connection=con}
 SELECT PNAME,
@@ -74,7 +76,9 @@ WHERE STATE = 'AZ'
 
 
 ```
-4. Para cada reserva natural localizada no Arizona, apresente seu nome, seguido pelo resultado da divisão do valor de ACRES pelo valor de FEE. Exclua as reservas cujo valor de FEE seja igual a zero.
+
+4.  Para cada reserva natural localizada no Arizona, apresente seu nome, seguido pelo resultado da divisão do valor de ACRES pelo valor de FEE. Exclua as reservas cujo valor de FEE seja igual a zero.
+
 ```{sql connection=con}
 SELECT PNAME,
        ACRES / FEE AS ACRES_PER_FEE
@@ -88,8 +92,8 @@ WHERE FEE > 0
 - Em seguida, as operações de adição e subtração são avaliadas, também seguindo uma leitura da esquerda para a direita.
 - O uso de parênteses pode alterar a ordem de avaliação. As expressões dentro dos parênteses são avaliadas primeiro.
 
+5.  Para cada reserva natural localizada no Arizona, apresente seu nome, seguido pelo resultado de adicionar 1000 ao valor de ACRES e, em seguida, dividir o resultado pelo valor de FEE. Exclua qualquer registro cujo valor de FEE seja igual a zero.\
 
-5.  Para cada reserva natural localizada no Arizona, apresente seu nome, seguido pelo resultado de adicionar 1000 ao valor de ACRES e, em seguida, dividir o resultado pelo valor de FEE. Exclua qualquer registro cujo valor de FEE seja igual a zero.  
 ```{sql connection=con}
 SELECT PNAME,
        ACRES + 1000 AS INCREASE_ACRES,
@@ -99,26 +103,21 @@ WHERE STATE = 'AZ' AND FEE > 0
 ```
 
 6.  Suponha que a área de cada reserva natural seja triplicada. Apresente o nome e a área de uma reserva se o valor de sua área ajustada exceder 100.000 acres.
+
 ```{sql connection=con}
 SELECT PNAME,
        ACRES * 3 AS TRIPLE_ACRES
 FROM PRESERVE
 WHERE (ACRES * 3) > 100000
 ```
+
 ## Funções de agregação
+
 Funções de agregação resumem múltiplos valores de uma determinada coluna. Por exemplo, SUM(ACRES) retorna a soma dos valores selecionados da coluna ACRES, enquanto AVG(FEE) retorna a média dos valores selecionados da coluna FEE.
 
 Algumas funções de agregação são:
 
-SUM() 
-COUNT()
-AVG() 
-MIN()
-MAX()
-STDEV()
-VARIANCE()
-Etc.
-Intereresados em mais funções, podem consultar este site.
+SUM() COUNT() AVG() MIN() MAX() STDEV() VARIANCE() Etc. Intereresados em mais funções, podem consultar este site.
 
 7.  Apresente a soma de todos os valores de ACRES da tabela PRESERVE.
 
@@ -128,18 +127,22 @@ FROM PRESERVE
 ```
 
 8.  Apresente a área média, em acres, das reservas naturais de Massachusetts.
+
 ```{sql connection=con}
 SELECT AVG(ACRES) AS AVERAGE_ACRES
 FROM PRESERVE
 WHERE STATE = 'MA'
 ```
+
 9.  Apresente a menor e a maior taxa de entrada da tabela PRESERVE.
+
 ```{sql connection=con}
 SELECT MIN(FEE) AS MIN_FEE,
        MAX(FEE) AS MAX_FEE
 FROM PRESERVE
 
 ```
+
 10. O que acontece se aplicarmos MIN() e MAX em cocunas de texto?. Aplique ambas funções na coluna PNAME
 
 ```{sql connection=con}
@@ -147,6 +150,7 @@ SELECT MIN(PNAME) AS MIN_PANEM,
        MAX(PNAME) AS MAX_PNAME
 FROM PRESERVE
 ```
+
 Resposta: A função organiza por ordem alfabética a coluna de texto.
 
 # Observação: Não podemos utilizar funções agregadas na clausula WHERE
@@ -158,19 +162,21 @@ SELECT COUNT(PNO) AS CTPRESERV
 FROM PRESERVE
 
 ```
+
 12. Quantos estados diferentes possuem reservas naturais descritas na tabela PRESERVE? Utilize CTSTATE como nome da coluna que apresenta esse resultado.
 
 ```{sql connection=con}
 SELECT COUNT(DISTINCT STATE) AS CTSTATE
 FROM PRESERVE
 ```
+
 13. Calcule e apresente dois totais resumidos:
-- O primeiro total é a soma de todas as taxas de entrada, considerando que cada taxa tenha sido aumentada em US$ 5,00.
-- O segundo total é o resultado de adicionar US$ 5,00 à soma de todas as taxas de entrada.
+
+- O primeiro total é a soma de todas as taxas de entrada, considerando que cada taxa tenha sido aumentada em US\$ 5,00.
+- O segundo total é o resultado de adicionar US\$ 5,00 à soma de todas as taxas de entrada.
 
 ```{sql connection=con}
 SELECT SUM(FEE + 5) AS FIRST_TOTAL,
        (5 + SUM(FEE)) AS SECOND_TOTAL
 FROM PRESERVE
 ```
-
