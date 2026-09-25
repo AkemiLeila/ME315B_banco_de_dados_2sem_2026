@@ -1,0 +1,34 @@
+---
+title: "lista7_leila_kawanishi_277185"
+author: "Leila Kawanishi"
+format: pdf
+editor: visual
+---
+
+
+## Hands-On
+
+1.  Consulte a tabela PURCHASE. Para cada peça, exiba seu número da peça (PNO), seguido pelo custo total de todas as compras dessa peça.
+
+2.  Consulte a tabela PURCHASE. Para cada funcionário que comprou uma peça, exiba seu número de funcionário (ENO), seguido pelo custo total de todas as peças compradas pelo funcionário.
+
+3.  Consulte a tabela PURCHASE. Calcule o total de COST para cada combinação de valores de (PJNO, ENO). Exiba essas colunas, da esquerda para a direita, na sequência (PJNO, ENO), seguidas pelo custo total. Ordene o resultado em ordem crescente por (PJNO, ENO).
+
+4.  Consulte a tabela PURCHASE. Calcule o total de COST para cada combinação de valores de (PNO, SNO). Exiba essas colunas, da esquerda para a direita, na sequência (PNO, SNO), seguidas pelo custo total. Ordene o resultado em ordem crescente por (PNO, SNO).
+
+5.  Consulte a tabela PURCHASE. Calcule o total de COST para cada combinação de valores de (PJNO, ENO, SNO). Exiba essas colunas, da esquerda para a direita, na sequência (PJNO, ENO, SNO), seguidas pelo custo total. Ordene o resultado em ordem crescente por (PJNO, ENO, SNO).
+
+6.  Consulte a tabela PURCHASE. Calcule o total de COST para cada combinação de valores de (PNO, SNO, ENO). Exiba essas colunas, da esquerda para a direita, na sequência (PNO, SNO, ENO), seguidas pelo custo total. Ordene o resultado em ordem crescente por (PNO, SNO, ENO).
+
+7.  Consulte a tabela PURCHASE. Exclua da análise todas as linhas associadas ao projeto PJ2. Exiba o total de COST para cada combinação de valores (PJNO, ENO, SNO).
+
+8.  Consulte a tabela PURCHASE. Exiba o COST total para cada combinação de valores (PNO, SNO, ENO) cujo total seja maior ou igual a 2000.
+
+```{r}
+Sys.setenv(TZ = "America/Sao_Paulo")
+
+paste(
+  "Arquivo compilado em:",
+  format(Sys.time(), "%d/%m/%Y às %H:%M:%S")
+)
+```
