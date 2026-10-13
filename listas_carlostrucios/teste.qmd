@@ -1,0 +1,12 @@
+---
+title: "teste"
+format: pdf
+editor: source
+---
+
+```{r}
+library(readr)
+df = read_csv(unz("../archive.zip", "airlines.csv"))
+df
+```
+
