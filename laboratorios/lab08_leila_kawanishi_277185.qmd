@@ -10,7 +10,7 @@ Dados relacionais são uma constante no exercício da profissão do estatístico
 
 ## Os Dados
 O banco de dados para esta atividade é o “IMDb Movie Data”, que possui informações sobre filmes, atores, diretores, gêneros e outros. 
-Para os arquivos indicados abaixo, considere que o símbolo \N representa valores faltantes. Observe com cuidado a extensão dos arquivos para uma indicação do formato do mesmo.
+Para os arquivos indicados abaixo, considere que o símbolo `\N` representa valores faltantes. Observe com cuidado a extensão dos arquivos para uma indicação do formato do mesmo.
 
 
 1. title.basics0.tsv.gz (Informações Básicas dos Filmes)
@@ -97,6 +97,43 @@ print(top_generos.head(1))
 
 Quais são os 3 atores/atrizes que mais participaram de filmes com nota maior que 7.5?
 ```{python}
-principal.select("category").unique().sort("category")
 
+ratings_filtrados = (ratings 
+                    .filter(pl.col("averageRating") > 7.5)
+                    .select("tconst", "averageRating")
+                    )
+
+#print(ratings_filtrados)
+
+artistas = (principal
+            .filter(pl.col("category").is_in(["actor", "actress"]))
+            .select("tconst", "nconst")
+            )
+
+#print(artistas)
+
+
+filmes_artistas = ratings_filtrados.join(artistas,
+                                        on = "tconst",
+                                        how = "inner")
+#print(filmes_artistas.head(4))
+
+top3_artistas = (
+                filmes_artistas
+                .group_by("nconst")
+                .agg(pl.col("tconst").n_unique().alias("quantidade_filmes"))
+                .sort("quantidade_filmes", descending = True)
+                .head(3)
+                )
+print(top3_artistas)
 ```
+
+```{r}
+Sys.setenv(TZ = "America/Sao_Paulo")
+
+paste(
+  "Arquivo compilado em:",
+  format(Sys.time(), "%d/%m/%Y às %H:%M:%S")
+)
+```
+
