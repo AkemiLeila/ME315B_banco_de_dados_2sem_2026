@@ -7,3 +7,6 @@
 *.zip
 flights.csv
 archive/database.sqlite3
+title.basics0.tsv.gz
+title.principals0.tsv.gz
+title.ratings0.tsv.gz
